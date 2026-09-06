@@ -1755,44 +1755,146 @@ function choosePhoto() {
    PHOTO HANDLER
 ========================= */
 
-function handlePhoto(event) {
+async function handlePhoto(event) {
 
-    const file =
-        event.target.files[0];
+    const file = event.target.files[0];
 
     if (!file) return;
 
-
     if (!file.type.startsWith("image/")) {
-
         alert("Please select an image.");
         return;
-
     }
 
+    const preview = document.getElementById("photoPreview");
 
-    const reader =
-        new FileReader();
+    // Show the selected photo
+    const imageURL = URL.createObjectURL(file);
+
+    preview.src = imageURL;
+    preview.style.display = "block";
+
+    document.getElementById("cameraIcon").style.display = "none";
+    document.getElementById("cameraText").style.display = "none";
+    document.getElementById("scanForm").style.display = "none";
+
+    document.getElementById("aiStatus").innerHTML = `
+        🤖 <b>Analyzing your food...</b>
+        <br><br>
+        Please wait while AI estimates the food and nutrition.
+    `;
+
+    try {
+
+        // Convert image to Base64
+        const base64Image = await fileToBase64(file);
+
+        // Send image to your Vercel backend
+        const response = await fetch("/api/analyze-food", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                image: base64Image
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.error || "AI analysis failed"
+            );
+        }
+
+        console.log("AI response:", data);
+
+        // Try to get the AI's text result
+        let resultText = "";
+
+        if (data.output) {
+
+            for (const item of data.output) {
+
+                if (item.content) {
+
+                    for (const content of item.content) {
+
+                        if (content.text) {
+                            resultText += content.text;
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        console.log("AI result:", resultText);
+
+        // Try to convert AI JSON into an object
+        let result;
+
+        try {
+
+            result = JSON.parse(
+                resultText
+                    .replace(/```json/g, "")
+                    .replace(/```/g, "")
+                    .trim()
+            );
+
+        } catch (error) {
+
+            console.log(
+                "Could not parse AI JSON:",
+                resultText
+            );
+
+            throw new Error(
+                "AI returned an unexpected result."
+            );
+
+        }
 
 
-    reader.onload = function(e) {
+        // Put AI result into the scanner form
 
-        const preview =
-            document.getElementById("photoPreview");
-
-        preview.src = e.target.result;
-
-        preview.style.display = "block";
+        document.getElementById(
+            "scanFoodName"
+        ).value =
+            result.foodName || "Scanned food";
 
 
         document.getElementById(
-            "cameraIcon"
-        ).style.display = "none";
+            "scanCalories"
+        ).value =
+            result.calories || "";
 
 
         document.getElementById(
-            "cameraText"
-        ).style.display = "none";
+            "scanProtein"
+        ).value =
+            result.protein || "";
+
+
+        document.getElementById(
+            "scanFat"
+        ).value =
+            result.fat || "";
+
+
+        document.getElementById(
+            "scanFibre"
+        ).value =
+            result.fibre || "";
 
 
         document.getElementById(
@@ -1803,31 +1905,54 @@ function handlePhoto(event) {
         document.getElementById(
             "aiStatus"
         ).innerHTML = `
-            🤖 <b>Photo ready</b>
+            ✅ <b>AI analysis complete</b>
             <br><br>
-            Your food photo has been selected.
-            <br><br>
-            AI analysis will be connected in the next step.
-            For now, you can enter the estimated nutrition
-            values below and add the meal.
+            These nutrition values are estimates.
+            Please review them before adding the food.
         `;
 
+        showToast("AI analysis complete");
+
+    } catch (error) {
+
+        console.error(error);
 
         document.getElementById(
-            "scanFoodName"
-        ).value = "Scanned food";
+            "aiStatus"
+        ).innerHTML = `
+            ❌ <b>Analysis failed</b>
+            <br><br>
+            ${escapeHtml(error.message)}
+            <br><br>
+            Please try another photo.
+        `;
 
+        showToast("AI analysis failed");
 
-        showToast("Photo selected");
-
-    };
-
-
-    reader.readAsDataURL(file);
+    }
 
 }
 
 
+/* Convert photo to Base64 */
+
+function fileToBase64(file) {
+
+    return new Promise((resolve, reject) => {
+
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            resolve(reader.result);
+        };
+
+        reader.onerror = reject;
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
 /* =========================
    ADD SCANNED FOOD
 ========================= */
