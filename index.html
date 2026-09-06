@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Bulk Tracker+</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b0d10;color:#f4f6f8;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif}
+.app{max-width:760px;margin:auto;padding:env(safe-area-inset-top) 14px calc(90px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:5;background:rgba(11,13,16,.94);backdrop-filter:blur(14px);padding:14px 2px 10px}
+h1{font-size:27px;margin:4px 0}.sub{color:#9ba3ad;font-size:14px}.date{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+button,select,input,textarea{font:inherit}button{border:0;border-radius:12px;padding:11px 14px;background:#242a32;color:white;font-weight:650}
+button:active{transform:scale(.98)}.primary{background:#f1f3f5;color:#101318}.danger{background:#3a2023;color:#ffb8bd}
+.card{background:#15191f;border:1px solid #2a3038;border-radius:18px;padding:16px;margin:12px 0}
+.progress{height:12px;background:#292f37;border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:#e9edf2;border-radius:20px;transition:.25s}
+.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:0}.muted{color:#9ba3ad}.small{font-size:12px}
+.item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #292f37}.item:last-child{border-bottom:0}
+.check{width:26px;height:26px;min-width:26px;border-radius:8px;border:2px solid #68717d;display:grid;place-items:center;background:transparent;padding:0}
+.check.done{background:#e9edf2;border-color:#e9edf2;color:#111}.check.done:after{content:"✓";font-weight:900}.item.done .label{text-decoration:line-through;color:#89919c}
+.label{flex:1}.tag{font-size:11px;color:#9ba3ad}.stat{font-size:22px;font-weight:800}.tabs{position:fixed;bottom:0;left:0;right:0;z-index:10;background:rgba(13,15,19,.96);border-top:1px solid #2a3038;padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:8px}
+.tab{background:transparent;color:#929aa5;padding:9px 13px}.tab.active{background:#252b33;color:#fff}
+.view{display:none}.view.active{display:block}
+input,textarea,select{width:100%;background:#0e1115;color:#fff;border:1px solid #343b45;border-radius:11px;padding:11px}textarea{min-height:80px;resize:vertical}
+canvas{width:100%;height:190px;background:#0e1115;border-radius:12px}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.calhead{text-align:center;color:#89919c;font-size:11px}.day{min-height:43px;padding:5px;border-radius:9px;background:#20252c;text-align:center;font-size:12px}.day.empty{background:transparent}.day.today{outline:2px solid #e9edf2}.day.good{background:#394149}.day .num{font-weight:700}.dot{font-size:10px;color:#bfc6ce}
+.notice{font-size:12px;color:#9ba3ad;line-height:1.5}
+@media(min-width:600px){.app{padding-left:22px;padding-right:22px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="row between"><div><h1>Bulk Tracker+</h1><div class="sub">Your daily training & nutrition log</div></div><button onclick="resetToday()">Reset today</button></div>
+  <div class="date"><button onclick="changeDate(-1)">‹</button><strong id="dateLabel"></strong><button onclick="changeDate(1)">›</button></div>
+</header>
+
+<section id="today" class="view active">
+  <div class="card">
+    <div class="row between"><div><div class="muted small">DAILY COMPLETION</div><div class="stat" id="percent">0%</div></div><div style="width:58%;"><div class="progress"><div class="bar" id="bar"></div></div><div class="muted small" id="count">0 of 0 completed</div></div></div>
+  </div>
+
+  <div class="card"><h2>Meals</h2><div id="meals"></div></div>
+  <div class="card"><h2>Workout</h2><div id="workout"></div></div>
+
+  <div class="grid">
+    <div class="card"><h3>💧 Water</h3><p class="muted small">Glasses / bottles logged</p><div class="row"><button onclick="addWater(-1)">−</button><div class="stat" id="water">0</div><button onclick="addWater(1)">+</button></div></div>
+    <div class="card"><h3>⚖️ Weight</h3><p class="muted small">Optional daily entry</p><input id="weight" type="number" inputmode="decimal" step="0.1" placeholder="kg" onchange="saveWeight()"></div>
+  </div>
+
+  <div class="card"><h2>Notes</h2><textarea id="notes" placeholder="Energy, sleep, training notes..."></textarea><button class="primary" style="margin-top:10px" onclick="saveNotes()">Save notes</button></div>
+</section>
+
+<section id="progress" class="view">
+  <div class="card"><h2>Progress</h2><div class="grid">
+    <div><div class="muted small">7-DAY COMPLETION</div><div class="stat" id="weekPct">0%</div></div>
+    <div><div class="muted small">CURRENT STREAK</div><div class="stat" id="streak">0 days</div></div>
+  </div></div>
+  <div class="card"><h2>Weight trend</h2><canvas id="chart" width="700" height="190"></canvas><p class="notice">This graph shows only the weights you choose to record. Normal day-to-day changes are expected.</p></div>
+  <div class="card"><h2>Last 7 days</h2><div id="weekList"></div></div>
+</section>
+
+<section id="calendar" class="view">
+  <div class="card"><div class="row between"><button onclick="changeMonth(-1)">‹</button><h2 id="monthLabel"></h2><button onclick="changeMonth(1)">›</button></div><div class="calendar" id="calendarGrid"></div></div>
+  <div class="card"><h2>How it works</h2><p class="notice">A day is marked as completed when all checklist items for that day are checked. Your data stays in this browser using local storage.</p></div>
+</section>
+
+<section id="settings" class="view">
+  <div class="card"><h2>Settings</h2><p class="notice">Your tracker is stored locally on this device/browser. If you clear website data, the saved tracker history may be removed.</p><button class="danger" onclick="clearAll()">Delete all tracker data</button></div>
+  <div class="card"><h2>Install on iPhone</h2><p class="notice">Open this website in Safari → Share → Add to Home Screen → Add.</p></div>
+</section>
+</div>
+
+<nav class="tabs">
+<button class="tab active" data-view="today">Today</button>
+<button class="tab" data-view="progress">Progress</button>
+<button class="tab" data-view="calendar">Calendar</button>
+<button class="tab" data-view="settings">Settings</button>
+</nav>
+
+<script>
+const KEY="bulkTrackerPlus_v1";
+const mealItems=["Breakfast","Morning snack","Lunch","Pre-workout snack","Dinner","Optional evening snack"];
+const workoutItems=["Workout completed","Warm-up / mobility","Cool-down"];
+let data=JSON.parse(localStorage.getItem(KEY)||"{}");
+let selected=new Date(); selected.setHours(0,0,0,0);
+let monthCursor=new Date(selected.getFullYear(),selected.getMonth(),1);
+
+function key(d=selected){return d.toISOString().slice(0,10)}
+function entry(d=selected){const k=key(d); if(!data[k]) data[k]={checks:{},water:0,weight:"",notes:""}; return data[k]}
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function allItems(){return [...mealItems,...workoutItems]}
+function render(){
+ document.getElementById("dateLabel").textContent=selected.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short",year:"numeric"});
+ const e=entry(); renderGroup("meals",mealItems); renderGroup("workout",workoutItems);
+ document.getElementById("water").textContent=e.water||0;
+ document.getElementById("weight").value=e.weight||"";
+ document.getElementById("notes").value=e.notes||"";
+ updateProgress(); renderWeek(); renderCalendar(); drawChart();
+}
+function renderGroup(id,items){
+ const e=entry(); document.getElementById(id).innerHTML=items.map(x=>`<div class="item ${e.checks[x]?"done":""}"><button class="check ${e.checks[x]?"done":""}" onclick="toggle('${x.replace(/'/g,"\\'")}')"></button><div class="label">${x}</div></div>`).join("");
+}
+function toggle(x){const e=entry();e.checks[x]=!e.checks[x];save();render()}
+function updateProgress(){
+ const e=entry(), n=allItems().length, done=allItems().filter(x=>e.checks[x]).length, p=n?Math.round(done/n*100):0;
+ document.getElementById("percent").textContent=p+"%";document.getElementById("bar").style.width=p+"%";document.getElementById("count").textContent=`${done} of ${n} completed`;
+}
+function addWater(v){const e=entry();e.water=Math.max(0,(e.water||0)+v);save();render()}
+function saveWeight(){entry().weight=document.getElementById("weight").value;save();drawChart();renderCalendar()}
+function saveNotes(){entry().notes=document.getElementById("notes").value;save()}
+function changeDate(v){selected.setDate(selected.getDate()+v);render()}
+function resetToday(){if(confirm("Reset all entries for this day?")){data[key()]={checks:{},water:0,weight:"",notes:""};save();render()}}
+function dayComplete(d){const e=entry(d);return allItems().every(x=>e.checks[x])}
+function completion(d){const e=entry(d);return allItems().filter(x=>e.checks[x]).length/allItems().length}
+function renderWeek(){
+ let sum=0,html="";
+ for(let i=6;i>=0;i--){let d=new Date(selected);d.setDate(d.getDate()-i);let c=Math.round(completion(d)*100);sum+=c;html+=`<div class="item"><div class="label">${d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"})}</div><strong>${c}%</strong></div>`}
+ document.getElementById("weekPct").textContent=Math.round(sum/7)+"%";document.getElementById("streak").textContent=getStreak()+" days";document.getElementById("weekList").innerHTML=html;
+}
+function getStreak(){
+ let d=new Date();d.setHours(0,0,0,0);let s=0;
+ while(dayComplete(d)){s++;d.setDate(d.getDate()-1);if(s>1000)break}
+ return s;
+}
+function renderCalendar(){
+ const y=monthCursor.getFullYear(),m=monthCursor.getMonth();document.getElementById("monthLabel").textContent=monthCursor.toLocaleDateString(undefined,{month:"long",year:"numeric"});
+ const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();let h=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(x=>`<div class="calhead">${x}</div>`).join("");
+ for(let i=0;i<first;i++)h+=`<div class="day empty"></div>`;
+ for(let n=1;n<=days;n++){let d=new Date(y,m,n);d.setHours(0,0,0,0);let c=Math.round(completion(d)*100);let cls="day"+(key(d)===key(selected)?" today":"")+(c===100?" good":"");h+=`<button class="${cls}" onclick="pickDay(${n})"><div class="num">${n}</div><div class="dot">${c}%</div></button>`}
+ document.getElementById("calendarGrid").innerHTML=h;
+}
+function pickDay(n){selected=new Date(monthCursor.getFullYear(),monthCursor.getMonth(),n);selected.setHours(0,0,0,0);show("today");render()}
+function changeMonth(v){monthCursor.setMonth(monthCursor.getMonth()+v);renderCalendar()}
+function drawChart(){
+ const c=document.getElementById("chart"),ctx=c.getContext("2d"),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);
+ const pts=[];for(let i=29;i>=0;i--){let d=new Date(selected);d.setDate(d.getDate()-i);let e=entry(d);if(e.weight!=="")pts.push({d,w:+e.weight})}
+ ctx.strokeStyle="#7f8995";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40,15);ctx.lineTo(40,h-28);ctx.lineTo(w-15,h-28);ctx.stroke();
+ if(!pts.length){ctx.fillStyle="#89919c";ctx.font="16px -apple-system";ctx.fillText("No weight entries yet",50,95);return}
+ const min=Math.min(...pts.map(p=>p.w)),max=Math.max(...pts.map(p=>p.w)),range=max-min||1;
+ ctx.strokeStyle="#f1f3f5";ctx.lineWidth=3;ctx.beginPath();
+ pts.forEach((p,i)=>{let x=45+i*((w-65)/Math.max(1,pts.length-1)),y=15+(max-p.w)/range*(h-55);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();
+ ctx.fillStyle="#f1f3f5";pts.forEach((p,i)=>{let x=45+i*((w-65)/Math.max(1,pts.length-1)),y=15+(max-p.w)/range*(h-55);ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill()});
+ ctx.fillStyle="#89919c";ctx.font="12px -apple-system";ctx.fillText(`${min.toFixed(1)} kg`,45,h-8);ctx.fillText(`${max.toFixed(1)} kg`,w-90,18);
+}
+function show(v){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.getElementById(v).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view===v));if(v==="progress")drawChart()}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>show(b.dataset.view));
+function clearAll(){if(confirm("Delete ALL tracker history? This cannot be undone.")){data={};save();render()}}
+render();
+</script>
+</body>
+</html>
