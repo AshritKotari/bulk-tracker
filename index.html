@@ -2,137 +2,153 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Bulk Tracker">
-<meta name="theme-color" content="#f7f7f8">
-<title>Bulk Tracker</title>
+<title>Bulk Tracker+</title>
 <style>
-:root{--bg:#f2f2f7;--card:#fff;--text:#111;--muted:#6e6e73;--line:#e5e5ea;--accent:#34c759;--blue:#007aff;--red:#ff3b30}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{background:var(--bg)}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",sans-serif;font-size:16px;padding-bottom:calc(88px + env(safe-area-inset-bottom))}
-header{padding:calc(18px + env(safe-area-inset-top)) 18px 15px;background:rgba(247,247,248,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);position:sticky;top:0;z-index:10;border-bottom:1px solid rgba(0,0,0,.08)}
-h1{font-size:31px;letter-spacing:-.8px;margin:0;font-weight:750}.sub{color:var(--muted);font-size:14px;margin-top:3px}
-main{max-width:700px;margin:auto;padding:12px}
-.card{background:var(--card);border-radius:16px;margin:12px 0;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.date{font-size:17px;font-weight:700}
-button{border:0;border-radius:12px;padding:10px 14px;font-weight:650;font-size:15px;background:#e5e5ea;color:#111;min-height:42px}
-button:active{transform:scale(.98)}
-.primary{background:var(--blue);color:white}.danger{color:var(--red);background:#fff0ef}
-.progress{height:9px;background:#e5e5ea;border-radius:10px;overflow:hidden;margin-top:13px}.bar{height:100%;width:0;background:var(--accent);transition:.25s}
-.progressText{font-size:13px;color:var(--muted);margin-top:7px}
-.section{font-size:20px;font-weight:750;margin-bottom:8px;letter-spacing:-.2px}
-.task{display:flex;align-items:center;gap:12px;min-height:53px;border-bottom:1px solid var(--line);cursor:pointer}
-.task:last-child{border-bottom:0}
-.task input{appearance:none;-webkit-appearance:none;width:25px;height:25px;border:2px solid #c7c7cc;border-radius:50%;flex:none}
-.task input:checked{background:var(--accent);border-color:var(--accent)}
-.task input:checked:after{content:"✓";display:block;color:white;font-size:17px;text-align:center;line-height:21px;font-weight:800}
-.task.done span{text-decoration:line-through;color:#9a9aa0}
-.tag{font-size:13px;color:var(--muted);margin-bottom:5px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.stat{background:#f2f2f7;border-radius:13px;padding:12px}.stat b{display:block;font-size:17px;margin-top:2px}.stat span{font-size:12px;color:var(--muted)}
-input[type=number],textarea{width:100%;font:inherit;border:1px solid #c7c7cc;border-radius:11px;padding:11px;background:#fff;outline:none}textarea{min-height:75px;resize:vertical}
-label.small{font-size:13px;color:var(--muted);display:block;margin-bottom:5px}
-.week{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{background:#f2f2f7;border-radius:11px;text-align:center;padding:8px 2px;font-size:12px}.day.active{background:#111;color:white}.day small{display:block;color:var(--muted);margin-top:3px}.day.active small{color:#ddd}
-.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(250,250,252,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid rgba(0,0,0,.12);padding:9px 12px calc(9px + env(safe-area-inset-bottom));display:flex;justify-content:center}
-.nav button{width:100%;max-width:650px;background:#111;color:#fff;border-radius:14px}
-.toast{position:fixed;bottom:calc(78px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 15px;border-radius:12px;display:none;z-index:30;font-size:14px}
-.note{font-size:12px;color:var(--muted);line-height:1.4;margin-top:9px}
-@media(max-width:360px){main{padding:8px}.grid{grid-template-columns:1fr 1fr}.stat{padding:10px}h1{font-size:28px}}
+*{box-sizing:border-box}body{margin:0;background:#0b0d10;color:#f4f6f8;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif}
+.app{max-width:760px;margin:auto;padding:env(safe-area-inset-top) 14px calc(90px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:5;background:rgba(11,13,16,.94);backdrop-filter:blur(14px);padding:14px 2px 10px}
+h1{font-size:27px;margin:4px 0}.sub{color:#9ba3ad;font-size:14px}.date{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+button,select,input,textarea{font:inherit}button{border:0;border-radius:12px;padding:11px 14px;background:#242a32;color:white;font-weight:650}
+button:active{transform:scale(.98)}.primary{background:#f1f3f5;color:#101318}.danger{background:#3a2023;color:#ffb8bd}
+.card{background:#15191f;border:1px solid #2a3038;border-radius:18px;padding:16px;margin:12px 0}
+.progress{height:12px;background:#292f37;border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:#e9edf2;border-radius:20px;transition:.25s}
+.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:0}.muted{color:#9ba3ad}.small{font-size:12px}
+.item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #292f37}.item:last-child{border-bottom:0}
+.check{width:26px;height:26px;min-width:26px;border-radius:8px;border:2px solid #68717d;display:grid;place-items:center;background:transparent;padding:0}
+.check.done{background:#e9edf2;border-color:#e9edf2;color:#111}.check.done:after{content:"✓";font-weight:900}.item.done .label{text-decoration:line-through;color:#89919c}
+.label{flex:1}.tag{font-size:11px;color:#9ba3ad}.stat{font-size:22px;font-weight:800}.tabs{position:fixed;bottom:0;left:0;right:0;z-index:10;background:rgba(13,15,19,.96);border-top:1px solid #2a3038;padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:8px}
+.tab{background:transparent;color:#929aa5;padding:9px 13px}.tab.active{background:#252b33;color:#fff}
+.view{display:none}.view.active{display:block}
+input,textarea,select{width:100%;background:#0e1115;color:#fff;border:1px solid #343b45;border-radius:11px;padding:11px}textarea{min-height:80px;resize:vertical}
+canvas{width:100%;height:190px;background:#0e1115;border-radius:12px}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.calhead{text-align:center;color:#89919c;font-size:11px}.day{min-height:43px;padding:5px;border-radius:9px;background:#20252c;text-align:center;font-size:12px}.day.empty{background:transparent}.day.today{outline:2px solid #e9edf2}.day.good{background:#394149}.day .num{font-weight:700}.dot{font-size:10px;color:#bfc6ce}
+.notice{font-size:12px;color:#9ba3ad;line-height:1.5}
+@media(min-width:600px){.app{padding-left:22px;padding-right:22px}}
 </style>
 </head>
 <body>
+<div class="app">
 <header>
- <h1>Bulk Tracker</h1>
- <div class="sub">Your daily food, training & recovery checklist</div>
+  <div class="row between"><div><h1>Bulk Tracker+</h1><div class="sub">Your daily training & nutrition log</div></div><button onclick="resetToday()">Reset today</button></div>
+  <div class="date"><button onclick="changeDate(-1)">‹</button><strong id="dateLabel"></strong><button onclick="changeDate(1)">›</button></div>
 </header>
 
-<main>
-<section class="card">
- <div class="row"><div><div class="date" id="date"></div><div class="sub">Today</div></div><button onclick="resetDay()">Reset</button></div>
- <div class="progress"><div class="bar" id="bar"></div></div>
- <div class="progressText" id="progress">0% complete</div>
+<section id="today" class="view active">
+  <div class="card">
+    <div class="row between"><div><div class="muted small">DAILY COMPLETION</div><div class="stat" id="percent">0%</div></div><div style="width:58%;"><div class="progress"><div class="bar" id="bar"></div></div><div class="muted small" id="count">0 of 0 completed</div></div></div>
+  </div>
+
+  <div class="card"><h2>Meals</h2><div id="meals"></div></div>
+  <div class="card"><h2>Workout</h2><div id="workout"></div></div>
+
+  <div class="grid">
+    <div class="card"><h3>💧 Water</h3><p class="muted small">Glasses / bottles logged</p><div class="row"><button onclick="addWater(-1)">−</button><div class="stat" id="water">0</div><button onclick="addWater(1)">+</button></div></div>
+    <div class="card"><h3>⚖️ Weight</h3><p class="muted small">Optional daily entry</p><input id="weight" type="number" inputmode="decimal" step="0.1" placeholder="kg" onchange="saveWeight()"></div>
+  </div>
+
+  <div class="card"><h2>Notes</h2><textarea id="notes" placeholder="Energy, sleep, training notes..."></textarea><button class="primary" style="margin-top:10px" onclick="saveNotes()">Save notes</button></div>
 </section>
 
-<section class="card">
- <div class="section">🎯 Daily targets</div>
- <div class="grid">
-  <div class="stat"><span>Calories</span><b>~3,000 kcal</b></div>
-  <div class="stat"><span>Protein</span><b>~130–150 g</b></div>
-  <div class="stat"><span>Carbs</span><b>~380–430 g</b></div>
-  <div class="stat"><span>Fat</span><b>~75–90 g</b></div>
-  <div class="stat"><span>Fiber</span><b>30–38 g</b></div>
-  <div class="stat"><span>Water</span><b>~2.5–3.5 L</b></div>
- </div>
+<section id="progress" class="view">
+  <div class="card"><h2>Progress</h2><div class="grid">
+    <div><div class="muted small">7-DAY COMPLETION</div><div class="stat" id="weekPct">0%</div></div>
+    <div><div class="muted small">CURRENT STREAK</div><div class="stat" id="streak">0 days</div></div>
+  </div></div>
+  <div class="card"><h2>Weight trend</h2><canvas id="chart" width="700" height="190"></canvas><p class="notice">This graph shows only the weights you choose to record. Normal day-to-day changes are expected.</p></div>
+  <div class="card"><h2>Last 7 days</h2><div id="weekList"></div></div>
 </section>
 
-<section class="card"><div class="section">🍽️ Meals</div><div id="meals"></div></section>
-
-<section class="card">
- <div class="section">🏋️ Workout</div>
- <div class="tag" id="workoutName"></div>
- <div id="workout"></div>
+<section id="calendar" class="view">
+  <div class="card"><div class="row between"><button onclick="changeMonth(-1)">‹</button><h2 id="monthLabel"></h2><button onclick="changeMonth(1)">›</button></div><div class="calendar" id="calendarGrid"></div></div>
+  <div class="card"><h2>How it works</h2><p class="notice">A day is marked as completed when all checklist items for that day are checked. Your data stays in this browser using local storage.</p></div>
 </section>
 
-<section class="card"><div class="section">💧 Recovery</div><div id="recovery"></div></section>
-
-<section class="card">
- <div class="section">📈 Daily log</div>
- <div class="grid">
-  <div><label class="small">Morning weight (kg)</label><input id="weight" type="number" step="0.1" placeholder="71.0"></div>
-  <div><label class="small">Water (L)</label><input id="water" type="number" step="0.1" placeholder="3.0"></div>
- </div>
- <label class="small" style="margin-top:12px">Notes</label>
- <textarea id="notes" placeholder="Energy, workout performance, meals..."></textarea>
+<section id="settings" class="view">
+  <div class="card"><h2>Settings</h2><p class="notice">Your tracker is stored locally on this device/browser. If you clear website data, the saved tracker history may be removed.</p><button class="danger" onclick="clearAll()">Delete all tracker data</button></div>
+  <div class="card"><h2>Install on iPhone</h2><p class="notice">Open this website in Safari → Share → Add to Home Screen → Add.</p></div>
 </section>
+</div>
 
-<section class="card"><div class="section">📅 Week</div><div class="week" id="week"></div></section>
-<section class="card"><button class="danger" style="width:100%" onclick="clearAll()">Delete all saved data</button><div class="note">Your checklist and logs are saved locally in this browser on this device.</div></section>
-</main>
-
-<div class="nav"><button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to Today</button></div>
-<div class="toast" id="toast"></div>
+<nav class="tabs">
+<button class="tab active" data-view="today">Today</button>
+<button class="tab" data-view="progress">Progress</button>
+<button class="tab" data-view="calendar">Calendar</button>
+<button class="tab" data-view="settings">Settings</button>
+</nav>
 
 <script>
-const meals=[
-"Breakfast • Oats — 80 g","Breakfast • Milk — 250 ml","Breakfast • Banana — 1","Breakfast • Peanut butter — 15 g","Breakfast • Nuts/seeds — 10–15 g","Breakfast • Eggs — 3",
-"Mid-morning • Curd — 200 g","Mid-morning • Fruit — 1 serving","Mid-morning • Cucumber/carrot — 1 serving",
-"Lunch • Cooked rice — 300 g","Lunch • Cooked chicken breast — 150 g","Lunch • Dal — 1 serving","Lunch • Vegetables — 150–200 g","Lunch • Cucumber + carrot","Lunch • Curd — 100 g",
-"Pre-workout • Banana — 1","Pre-workout • Oats — 20 g","Pre-workout • Milk — 200 ml",
-"Dinner • Cooked rice — 300 g","Dinner • Cooked chicken breast — 150 g","Dinner • Eggs — 5","Dinner • Vegetables — 150–200 g","Dinner • Cucumber/carrot",
-"Before bed • Milk — 200 ml, if wanted","Before bed • Small serving of nuts/seeds"];
-const recovery=["Drink water regularly through the day","Warm up before training","Use good exercise technique","Don't train through significant pain","Cool down / light stretching if desired","Aim for 8–10 hours of sleep"];
-const workouts={Monday:"PUSH — Chest, Shoulders, Triceps",Tuesday:"PULL — Back, Biceps, Rear shoulders",Wednesday:"LEGS — Quads, Hamstrings, Glutes, Calves, Core",Thursday:"PUSH — Chest, Shoulders, Triceps",Friday:"PULL — Back, Biceps, Rear shoulders",Saturday:"LEGS + CORE — Quads, Hamstrings, Glutes, Calves, Core",Sunday:"RECOVERY — Rest / light movement"};
-const todayKey=()=>new Date().toISOString().slice(0,10);
-function get(){return JSON.parse(localStorage.getItem("bulk-"+todayKey())||'{"tasks":{},"weight":"","water":"","notes":""}')}
-function put(s){localStorage.setItem("bulk-"+todayKey(),JSON.stringify(s))}
-function addTasks(list,id){
- const el=document.getElementById(id),s=get();el.innerHTML="";
- list.forEach((text,i)=>{const label=document.createElement("label");label.className="task";const cb=document.createElement("input");cb.type="checkbox";cb.checked=!!s.tasks[id+i];const span=document.createElement("span");span.textContent=text;label.append(cb,span);cb.onchange=()=>{let x=get();x.tasks[id+i]=cb.checked;put(x);update()};el.append(label)})
-}
-function update(){
- const boxes=[...document.querySelectorAll(".task input")];const done=boxes.filter(x=>x.checked).length,p=boxes.length?Math.round(done/boxes.length*100):0;
- boxes.forEach(x=>x.parentElement.classList.toggle("done",x.checked));
- document.getElementById("bar").style.width=p+"%";document.getElementById("progress").textContent=`${done}/${boxes.length} tasks • ${p}% complete`;
-}
+const KEY="bulkTrackerPlus_v1";
+const mealItems=["Breakfast","Morning snack","Lunch","Pre-workout snack","Dinner","Optional evening snack"];
+const workoutItems=["Workout completed","Warm-up / mobility","Cool-down"];
+let data=JSON.parse(localStorage.getItem(KEY)||"{}");
+let selected=new Date(); selected.setHours(0,0,0,0);
+let monthCursor=new Date(selected.getFullYear(),selected.getMonth(),1);
+
+function key(d=selected){return d.toISOString().slice(0,10)}
+function entry(d=selected){const k=key(d); if(!data[k]) data[k]={checks:{},water:0,weight:"",notes:""}; return data[k]}
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function allItems(){return [...mealItems,...workoutItems]}
 function render(){
- const d=new Date(),day=d.toLocaleDateString("en-US",{weekday:"long"});
- document.getElementById("date").textContent=d.toLocaleDateString(undefined,{weekday:"long",month:"short",day:"numeric",year:"numeric"});
- addTasks(meals,"meal");addTasks(["Warm-up completed","Main workout completed","Cool-down / stretching"],"workout");addTasks(recovery,"recovery");
- document.getElementById("workoutName").textContent=workouts[day];
- const s=get();weight.value=s.weight||"";water.value=s.water||"";notes.value=s.notes||"";
- weight.oninput=e=>{let x=get();x.weight=e.target.value;put(x)};water.oninput=e=>{let x=get();x.water=e.target.value;put(x)};notes.oninput=e=>{let x=get();x.notes=e.target.value;put(x)};
- renderWeek();update()
+ document.getElementById("dateLabel").textContent=selected.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short",year:"numeric"});
+ const e=entry(); renderGroup("meals",mealItems); renderGroup("workout",workoutItems);
+ document.getElementById("water").textContent=e.water||0;
+ document.getElementById("weight").value=e.weight||"";
+ document.getElementById("notes").value=e.notes||"";
+ updateProgress(); renderWeek(); renderCalendar(); drawChart();
 }
+function renderGroup(id,items){
+ const e=entry(); document.getElementById(id).innerHTML=items.map(x=>`<div class="item ${e.checks[x]?"done":""}"><button class="check ${e.checks[x]?"done":""}" onclick="toggle('${x.replace(/'/g,"\\'")}')"></button><div class="label">${x}</div></div>`).join("");
+}
+function toggle(x){const e=entry();e.checks[x]=!e.checks[x];save();render()}
+function updateProgress(){
+ const e=entry(), n=allItems().length, done=allItems().filter(x=>e.checks[x]).length, p=n?Math.round(done/n*100):0;
+ document.getElementById("percent").textContent=p+"%";document.getElementById("bar").style.width=p+"%";document.getElementById("count").textContent=`${done} of ${n} completed`;
+}
+function addWater(v){const e=entry();e.water=Math.max(0,(e.water||0)+v);save();render()}
+function saveWeight(){entry().weight=document.getElementById("weight").value;save();drawChart();renderCalendar()}
+function saveNotes(){entry().notes=document.getElementById("notes").value;save()}
+function changeDate(v){selected.setDate(selected.getDate()+v);render()}
+function resetToday(){if(confirm("Reset all entries for this day?")){data[key()]={checks:{},water:0,weight:"",notes:""};save();render()}}
+function dayComplete(d){const e=entry(d);return allItems().every(x=>e.checks[x])}
+function completion(d){const e=entry(d);return allItems().filter(x=>e.checks[x]).length/allItems().length}
 function renderWeek(){
- const box=document.getElementById("week"),now=new Date(),idx=(now.getDay()+6)%7,m=new Date(now);m.setDate(now.getDate()-idx);box.innerHTML="";
- ["M","T","W","T","F","S","S"].forEach((n,i)=>{let x=new Date(m);x.setDate(m.getDate()+i);let d=document.createElement("div");d.className="day"+(i===idx?" active":"");d.innerHTML=`<b>${n}</b><small>${x.getDate()}/${x.getMonth()+1}</small>`;box.append(d)})
+ let sum=0,html="";
+ for(let i=6;i>=0;i--){let d=new Date(selected);d.setDate(d.getDate()-i);let c=Math.round(completion(d)*100);sum+=c;html+=`<div class="item"><div class="label">${d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"})}</div><strong>${c}%</strong></div>`}
+ document.getElementById("weekPct").textContent=Math.round(sum/7)+"%";document.getElementById("streak").textContent=getStreak()+" days";document.getElementById("weekList").innerHTML=html;
 }
-function resetDay(){if(confirm("Reset today's checklist?")){localStorage.removeItem("bulk-"+todayKey());render();toast("Reset complete")}}
-function clearAll(){if(confirm("Delete all saved Bulk Tracker data?")){Object.keys(localStorage).filter(k=>k.startsWith("bulk-")).forEach(k=>localStorage.removeItem(k));render();toast("All data deleted")}}
-function toast(t){const x=document.getElementById("toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",1600)}
+function getStreak(){
+ let d=new Date();d.setHours(0,0,0,0);let s=0;
+ while(dayComplete(d)){s++;d.setDate(d.getDate()-1);if(s>1000)break}
+ return s;
+}
+function renderCalendar(){
+ const y=monthCursor.getFullYear(),m=monthCursor.getMonth();document.getElementById("monthLabel").textContent=monthCursor.toLocaleDateString(undefined,{month:"long",year:"numeric"});
+ const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();let h=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(x=>`<div class="calhead">${x}</div>`).join("");
+ for(let i=0;i<first;i++)h+=`<div class="day empty"></div>`;
+ for(let n=1;n<=days;n++){let d=new Date(y,m,n);d.setHours(0,0,0,0);let c=Math.round(completion(d)*100);let cls="day"+(key(d)===key(selected)?" today":"")+(c===100?" good":"");h+=`<button class="${cls}" onclick="pickDay(${n})"><div class="num">${n}</div><div class="dot">${c}%</div></button>`}
+ document.getElementById("calendarGrid").innerHTML=h;
+}
+function pickDay(n){selected=new Date(monthCursor.getFullYear(),monthCursor.getMonth(),n);selected.setHours(0,0,0,0);show("today");render()}
+function changeMonth(v){monthCursor.setMonth(monthCursor.getMonth()+v);renderCalendar()}
+function drawChart(){
+ const c=document.getElementById("chart"),ctx=c.getContext("2d"),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);
+ const pts=[];for(let i=29;i>=0;i--){let d=new Date(selected);d.setDate(d.getDate()-i);let e=entry(d);if(e.weight!=="")pts.push({d,w:+e.weight})}
+ ctx.strokeStyle="#7f8995";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40,15);ctx.lineTo(40,h-28);ctx.lineTo(w-15,h-28);ctx.stroke();
+ if(!pts.length){ctx.fillStyle="#89919c";ctx.font="16px -apple-system";ctx.fillText("No weight entries yet",50,95);return}
+ const min=Math.min(...pts.map(p=>p.w)),max=Math.max(...pts.map(p=>p.w)),range=max-min||1;
+ ctx.strokeStyle="#f1f3f5";ctx.lineWidth=3;ctx.beginPath();
+ pts.forEach((p,i)=>{let x=45+i*((w-65)/Math.max(1,pts.length-1)),y=15+(max-p.w)/range*(h-55);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();
+ ctx.fillStyle="#f1f3f5";pts.forEach((p,i)=>{let x=45+i*((w-65)/Math.max(1,pts.length-1)),y=15+(max-p.w)/range*(h-55);ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill()});
+ ctx.fillStyle="#89919c";ctx.font="12px -apple-system";ctx.fillText(`${min.toFixed(1)} kg`,45,h-8);ctx.fillText(`${max.toFixed(1)} kg`,w-90,18);
+}
+function show(v){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.getElementById(v).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view===v));if(v==="progress")drawChart()}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>show(b.dataset.view));
+function clearAll(){if(confirm("Delete ALL tracker history? This cannot be undone.")){data={};save();render()}}
 render();
 </script>
 </body>
