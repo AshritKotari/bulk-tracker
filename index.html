@@ -2,154 +2,778 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b0d10">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Bulk Tracker+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>Bulk Tracker</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0b0d10;color:#f4f6f8;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif}
-.app{max-width:760px;margin:auto;padding:env(safe-area-inset-top) 14px calc(90px + env(safe-area-inset-bottom))}
-header{position:sticky;top:0;z-index:5;background:rgba(11,13,16,.94);backdrop-filter:blur(14px);padding:14px 2px 10px}
-h1{font-size:27px;margin:4px 0}.sub{color:#9ba3ad;font-size:14px}.date{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
-button,select,input,textarea{font:inherit}button{border:0;border-radius:12px;padding:11px 14px;background:#242a32;color:white;font-weight:650}
-button:active{transform:scale(.98)}.primary{background:#f1f3f5;color:#101318}.danger{background:#3a2023;color:#ffb8bd}
-.card{background:#15191f;border:1px solid #2a3038;border-radius:18px;padding:16px;margin:12px 0}
-.progress{height:12px;background:#292f37;border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:#e9edf2;border-radius:20px;transition:.25s}
-.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:0}.muted{color:#9ba3ad}.small{font-size:12px}
-.item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #292f37}.item:last-child{border-bottom:0}
-.check{width:26px;height:26px;min-width:26px;border-radius:8px;border:2px solid #68717d;display:grid;place-items:center;background:transparent;padding:0}
-.check.done{background:#e9edf2;border-color:#e9edf2;color:#111}.check.done:after{content:"✓";font-weight:900}.item.done .label{text-decoration:line-through;color:#89919c}
-.label{flex:1}.tag{font-size:11px;color:#9ba3ad}.stat{font-size:22px;font-weight:800}.tabs{position:fixed;bottom:0;left:0;right:0;z-index:10;background:rgba(13,15,19,.96);border-top:1px solid #2a3038;padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:8px}
-.tab{background:transparent;color:#929aa5;padding:9px 13px}.tab.active{background:#252b33;color:#fff}
-.view{display:none}.view.active{display:block}
-input,textarea,select{width:100%;background:#0e1115;color:#fff;border:1px solid #343b45;border-radius:11px;padding:11px}textarea{min-height:80px;resize:vertical}
-canvas{width:100%;height:190px;background:#0e1115;border-radius:12px}
-.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.calhead{text-align:center;color:#89919c;font-size:11px}.day{min-height:43px;padding:5px;border-radius:9px;background:#20252c;text-align:center;font-size:12px}.day.empty{background:transparent}.day.today{outline:2px solid #e9edf2}.day.good{background:#394149}.day .num{font-weight:700}.dot{font-size:10px;color:#bfc6ce}
-.notice{font-size:12px;color:#9ba3ad;line-height:1.5}
-@media(min-width:600px){.app{padding-left:22px;padding-right:22px}}
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 18px;
+}
+
+.header {
+    background: #111827;
+    color: white;
+    padding: 22px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 27px;
+}
+
+.header p {
+    margin: 6px 0 0;
+    color: #d1d5db;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.date-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-top: 6px;
+}
+
+label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.target-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stat {
+    background: #f9fafb;
+    padding: 14px;
+    border-radius: 14px;
+}
+
+.stat-title {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 3px;
+}
+
+.progress {
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #111827;
+    border-radius: 20px;
+    transition: width 0.3s;
+}
+
+.remaining {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 5px;
+}
+
+button {
+    border: none;
+    border-radius: 11px;
+    padding: 12px 15px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.primary {
+    background: #111827;
+    color: white;
+}
+
+.secondary {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.danger {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.add-button {
+    width: 100%;
+    margin-top: 12px;
+}
+
+.meal {
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 14px;
+    margin-top: 12px;
+}
+
+.meal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meal-name {
+    font-weight: 700;
+    font-size: 17px;
+}
+
+.food {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.food:last-child {
+    border-bottom: none;
+}
+
+.food-info {
+    flex: 1;
+}
+
+.food-title {
+    font-weight: 600;
+}
+
+.food-details {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 3px;
+}
+
+.delete-btn {
+    background: transparent;
+    color: #ef4444;
+    padding: 5px 8px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+.button-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.button-row button {
+    flex: 1;
+}
+
+.empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 15px;
+}
+
+.small {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.weight-history {
+    margin-top: 10px;
+}
+
+.weight-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+@media (max-width: 400px) {
+    .target-grid,
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+}
 </style>
 </head>
+
 <body>
-<div class="app">
-<header>
-  <div class="row between"><div><h1>Bulk Tracker+</h1><div class="sub">Your daily training & nutrition log</div></div><button onclick="resetToday()">Reset today</button></div>
-  <div class="date"><button onclick="changeDate(-1)">‹</button><strong id="dateLabel"></strong><button onclick="changeDate(1)">›</button></div>
-</header>
 
-<section id="today" class="view active">
-  <div class="card">
-    <div class="row between"><div><div class="muted small">DAILY COMPLETION</div><div class="stat" id="percent">0%</div></div><div style="width:58%;"><div class="progress"><div class="bar" id="bar"></div></div><div class="muted small" id="count">0 of 0 completed</div></div></div>
-  </div>
+<div class="container">
 
-  <div class="card"><h2>Meals</h2><div id="meals"></div></div>
-  <div class="card"><h2>Workout</h2><div id="workout"></div></div>
+    <div class="header">
+        <h1>💪 Bulk Tracker</h1>
+        <p>Track your calories, protein and progress</p>
+    </div>
 
-  <div class="grid">
-    <div class="card"><h3>💧 Water</h3><p class="muted small">Glasses / bottles logged</p><div class="row"><button onclick="addWater(-1)">−</button><div class="stat" id="water">0</div><button onclick="addWater(1)">+</button></div></div>
-    <div class="card"><h3>⚖️ Weight</h3><p class="muted small">Optional daily entry</p><input id="weight" type="number" inputmode="decimal" step="0.1" placeholder="kg" onchange="saveWeight()"></div>
-  </div>
+    <!-- DATE -->
+    <div class="card">
+        <div class="date-row">
+            <div>
+                <label>TRACKING DATE</label>
+                <input type="date" id="datePicker">
+            </div>
+        </div>
+    </div>
 
-  <div class="card"><h2>Notes</h2><textarea id="notes" placeholder="Energy, sleep, training notes..."></textarea><button class="primary" style="margin-top:10px" onclick="saveNotes()">Save notes</button></div>
-</section>
+    <!-- TARGETS -->
+    <div class="card">
+        <h2>🎯 Daily Targets</h2>
 
-<section id="progress" class="view">
-  <div class="card"><h2>Progress</h2><div class="grid">
-    <div><div class="muted small">7-DAY COMPLETION</div><div class="stat" id="weekPct">0%</div></div>
-    <div><div class="muted small">CURRENT STREAK</div><div class="stat" id="streak">0 days</div></div>
-  </div></div>
-  <div class="card"><h2>Weight trend</h2><canvas id="chart" width="700" height="190"></canvas><p class="notice">This graph shows only the weights you choose to record. Normal day-to-day changes are expected.</p></div>
-  <div class="card"><h2>Last 7 days</h2><div id="weekList"></div></div>
-</section>
+        <div class="target-grid">
+            <div>
+                <label>Calories Target</label>
+                <input type="number" id="calorieTarget" placeholder="e.g. 2800">
+            </div>
 
-<section id="calendar" class="view">
-  <div class="card"><div class="row between"><button onclick="changeMonth(-1)">‹</button><h2 id="monthLabel"></h2><button onclick="changeMonth(1)">›</button></div><div class="calendar" id="calendarGrid"></div></div>
-  <div class="card"><h2>How it works</h2><p class="notice">A day is marked as completed when all checklist items for that day are checked. Your data stays in this browser using local storage.</p></div>
-</section>
+            <div>
+                <label>Protein Target (g)</label>
+                <input type="number" id="proteinTarget" placeholder="e.g. 130">
+            </div>
+        </div>
 
-<section id="settings" class="view">
-  <div class="card"><h2>Settings</h2><p class="notice">Your tracker is stored locally on this device/browser. If you clear website data, the saved tracker history may be removed.</p><button class="danger" onclick="clearAll()">Delete all tracker data</button></div>
-  <div class="card"><h2>Install on iPhone</h2><p class="notice">Open this website in Safari → Share → Add to Home Screen → Add.</p></div>
-</section>
+        <button class="primary add-button" onclick="saveTargets()">
+            Save Targets
+        </button>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="card">
+        <h2>📊 Today's Progress</h2>
+
+        <div class="stat">
+            <div class="stat-title">Calories</div>
+            <div class="stat-value">
+                <span id="totalCalories">0</span>
+                <span class="small">kcal</span>
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" id="calorieProgress"></div>
+            </div>
+
+            <div class="remaining" id="calorieRemaining">
+                Set your calorie target
+            </div>
+        </div>
+
+        <br>
+
+        <div class="stat">
+            <div class="stat-title">Protein</div>
+            <div class="stat-value">
+                <span id="totalProtein">0</span>
+                <span class="small">g</span>
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" id="proteinProgress"></div>
+            </div>
+
+            <div class="remaining" id="proteinRemaining">
+                Set your protein target
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD FOOD -->
+    <div class="card">
+        <h2>🍽️ Add Food</h2>
+
+        <div class="form-grid">
+
+            <div class="full">
+                <label>Meal</label>
+                <select id="mealType">
+                    <option>Breakfast</option>
+                    <option>Lunch</option>
+                    <option>Snacks</option>
+                    <option>Dinner</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="full">
+                <label>Food Name</label>
+                <input type="text" id="foodName" placeholder="e.g. Chicken breast">
+            </div>
+
+            <div>
+                <label>Calories</label>
+                <input type="number" id="foodCalories" placeholder="Calories">
+            </div>
+
+            <div>
+                <label>Protein (g)</label>
+                <input type="number" id="foodProtein" placeholder="Protein">
+            </div>
+
+        </div>
+
+        <button class="primary add-button" onclick="addFood()">
+            + Add Food
+        </button>
+    </div>
+
+    <!-- MEALS -->
+    <div class="card">
+        <h2>🥗 Today's Meals</h2>
+        <div id="mealList"></div>
+    </div>
+
+    <!-- WEIGHT -->
+    <div class="card">
+        <h2>⚖️ Weight Tracking</h2>
+
+        <label>Today's Weight (kg)</label>
+        <input type="number" id="weightInput" step="0.1" placeholder="Enter weight">
+
+        <button class="primary add-button" onclick="saveWeight()">
+            Save Weight
+        </button>
+
+        <div class="weight-history" id="weightHistory"></div>
+    </div>
+
+    <!-- RESET -->
+    <div class="card">
+        <button class="danger add-button" onclick="resetDay()">
+            🗑️ Reset Today's Food
+        </button>
+    </div>
+
 </div>
 
-<nav class="tabs">
-<button class="tab active" data-view="today">Today</button>
-<button class="tab" data-view="progress">Progress</button>
-<button class="tab" data-view="calendar">Calendar</button>
-<button class="tab" data-view="settings">Settings</button>
-</nav>
-
 <script>
-const KEY="bulkTrackerPlus_v1";
-const mealItems=["Breakfast","Morning snack","Lunch","Pre-workout snack","Dinner","Optional evening snack"];
-const workoutItems=["Workout completed","Warm-up / mobility","Cool-down"];
-let data=JSON.parse(localStorage.getItem(KEY)||"{}");
-let selected=new Date(); selected.setHours(0,0,0,0);
-let monthCursor=new Date(selected.getFullYear(),selected.getMonth(),1);
 
-function key(d=selected){return d.toISOString().slice(0,10)}
-function entry(d=selected){const k=key(d); if(!data[k]) data[k]={checks:{},water:0,weight:"",notes:""}; return data[k]}
-function save(){localStorage.setItem(KEY,JSON.stringify(data))}
-function allItems(){return [...mealItems,...workoutItems]}
-function render(){
- document.getElementById("dateLabel").textContent=selected.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short",year:"numeric"});
- const e=entry(); renderGroup("meals",mealItems); renderGroup("workout",workoutItems);
- document.getElementById("water").textContent=e.water||0;
- document.getElementById("weight").value=e.weight||"";
- document.getElementById("notes").value=e.notes||"";
- updateProgress(); renderWeek(); renderCalendar(); drawChart();
+let currentDate = "";
+let data = {};
+
+const datePicker = document.getElementById("datePicker");
+
+function todayString() {
+    const d = new Date();
+    const offset = d.getTimezoneOffset();
+    const local = new Date(d.getTime() - offset * 60000);
+    return local.toISOString().split("T")[0];
 }
-function renderGroup(id,items){
- const e=entry(); document.getElementById(id).innerHTML=items.map(x=>`<div class="item ${e.checks[x]?"done":""}"><button class="check ${e.checks[x]?"done":""}" onclick="toggle('${x.replace(/'/g,"\\'")}')"></button><div class="label">${x}</div></div>`).join("");
+
+function loadData() {
+    const saved = localStorage.getItem("bulkTrackerData");
+
+    if (saved) {
+        data = JSON.parse(saved);
+    }
+
+    currentDate = datePicker.value;
+
+    if (!data[currentDate]) {
+        data[currentDate] = {
+            foods: [],
+            weight: ""
+        };
+    }
+
+    const savedTargets = localStorage.getItem("bulkTargets");
+
+    if (savedTargets) {
+        const targets = JSON.parse(savedTargets);
+
+        document.getElementById("calorieTarget").value =
+            targets.calories || "";
+
+        document.getElementById("proteinTarget").value =
+            targets.protein || "";
+    }
+
+    render();
 }
-function toggle(x){const e=entry();e.checks[x]=!e.checks[x];save();render()}
-function updateProgress(){
- const e=entry(), n=allItems().length, done=allItems().filter(x=>e.checks[x]).length, p=n?Math.round(done/n*100):0;
- document.getElementById("percent").textContent=p+"%";document.getElementById("bar").style.width=p+"%";document.getElementById("count").textContent=`${done} of ${n} completed`;
+
+function saveAll() {
+    localStorage.setItem(
+        "bulkTrackerData",
+        JSON.stringify(data)
+    );
 }
-function addWater(v){const e=entry();e.water=Math.max(0,(e.water||0)+v);save();render()}
-function saveWeight(){entry().weight=document.getElementById("weight").value;save();drawChart();renderCalendar()}
-function saveNotes(){entry().notes=document.getElementById("notes").value;save()}
-function changeDate(v){selected.setDate(selected.getDate()+v);render()}
-function resetToday(){if(confirm("Reset all entries for this day?")){data[key()]={checks:{},water:0,weight:"",notes:""};save();render()}}
-function dayComplete(d){const e=entry(d);return allItems().every(x=>e.checks[x])}
-function completion(d){const e=entry(d);return allItems().filter(x=>e.checks[x]).length/allItems().length}
-function renderWeek(){
- let sum=0,html="";
- for(let i=6;i>=0;i--){let d=new Date(selected);d.setDate(d.getDate()-i);let c=Math.round(completion(d)*100);sum+=c;html+=`<div class="item"><div class="label">${d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"})}</div><strong>${c}%</strong></div>`}
- document.getElementById("weekPct").textContent=Math.round(sum/7)+"%";document.getElementById("streak").textContent=getStreak()+" days";document.getElementById("weekList").innerHTML=html;
+
+function saveTargets() {
+
+    const calories =
+        Number(document.getElementById("calorieTarget").value);
+
+    const protein =
+        Number(document.getElementById("proteinTarget").value);
+
+    localStorage.setItem(
+        "bulkTargets",
+        JSON.stringify({
+            calories: calories,
+            protein: protein
+        })
+    );
+
+    updateProgress();
+
+    alert("Targets saved!");
 }
-function getStreak(){
- let d=new Date();d.setHours(0,0,0,0);let s=0;
- while(dayComplete(d)){s++;d.setDate(d.getDate()-1);if(s>1000)break}
- return s;
+
+function addFood() {
+
+    const meal =
+        document.getElementById("mealType").value;
+
+    const name =
+        document.getElementById("foodName").value.trim();
+
+    const calories =
+        Number(document.getElementById("foodCalories").value);
+
+    const protein =
+        Number(document.getElementById("foodProtein").value);
+
+    if (!name) {
+        alert("Please enter the food name.");
+        return;
+    }
+
+    if (calories < 0 || protein < 0) {
+        alert("Calories and protein cannot be negative.");
+        return;
+    }
+
+    data[currentDate].foods.push({
+        id: Date.now(),
+        meal: meal,
+        name: name,
+        calories: calories,
+        protein: protein
+    });
+
+    saveAll();
+
+    document.getElementById("foodName").value = "";
+    document.getElementById("foodCalories").value = "";
+    document.getElementById("foodProtein").value = "";
+
+    render();
 }
-function renderCalendar(){
- const y=monthCursor.getFullYear(),m=monthCursor.getMonth();document.getElementById("monthLabel").textContent=monthCursor.toLocaleDateString(undefined,{month:"long",year:"numeric"});
- const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();let h=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(x=>`<div class="calhead">${x}</div>`).join("");
- for(let i=0;i<first;i++)h+=`<div class="day empty"></div>`;
- for(let n=1;n<=days;n++){let d=new Date(y,m,n);d.setHours(0,0,0,0);let c=Math.round(completion(d)*100);let cls="day"+(key(d)===key(selected)?" today":"")+(c===100?" good":"");h+=`<button class="${cls}" onclick="pickDay(${n})"><div class="num">${n}</div><div class="dot">${c}%</div></button>`}
- document.getElementById("calendarGrid").innerHTML=h;
+
+function deleteFood(id) {
+
+    data[currentDate].foods =
+        data[currentDate].foods.filter(food => food.id !== id);
+
+    saveAll();
+    render();
 }
-function pickDay(n){selected=new Date(monthCursor.getFullYear(),monthCursor.getMonth(),n);selected.setHours(0,0,0,0);show("today");render()}
-function changeMonth(v){monthCursor.setMonth(monthCursor.getMonth()+v);renderCalendar()}
-function drawChart(){
- const c=document.getElementById("chart"),ctx=c.getContext("2d"),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);
- const pts=[];for(let i=29;i>=0;i--){let d=new Date(selected);d.setDate(d.getDate()-i);let e=entry(d);if(e.weight!=="")pts.push({d,w:+e.weight})}
- ctx.strokeStyle="#7f8995";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40,15);ctx.lineTo(40,h-28);ctx.lineTo(w-15,h-28);ctx.stroke();
- if(!pts.length){ctx.fillStyle="#89919c";ctx.font="16px -apple-system";ctx.fillText("No weight entries yet",50,95);return}
- const min=Math.min(...pts.map(p=>p.w)),max=Math.max(...pts.map(p=>p.w)),range=max-min||1;
- ctx.strokeStyle="#f1f3f5";ctx.lineWidth=3;ctx.beginPath();
- pts.forEach((p,i)=>{let x=45+i*((w-65)/Math.max(1,pts.length-1)),y=15+(max-p.w)/range*(h-55);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();
- ctx.fillStyle="#f1f3f5";pts.forEach((p,i)=>{let x=45+i*((w-65)/Math.max(1,pts.length-1)),y=15+(max-p.w)/range*(h-55);ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill()});
- ctx.fillStyle="#89919c";ctx.font="12px -apple-system";ctx.fillText(`${min.toFixed(1)} kg`,45,h-8);ctx.fillText(`${max.toFixed(1)} kg`,w-90,18);
+
+function render() {
+
+    const list =
+        document.getElementById("mealList");
+
+    const foods =
+        data[currentDate].foods || [];
+
+    if (foods.length === 0) {
+
+        list.innerHTML =
+            `<div class="empty">
+                No foods added today.<br>
+                Add your first meal above.
+            </div>`;
+
+        updateProgress();
+        renderWeight();
+        return;
+    }
+
+    const meals = [
+        "Breakfast",
+        "Lunch",
+        "Snacks",
+        "Dinner",
+        "Other"
+    ];
+
+    let html = "";
+
+    meals.forEach(meal => {
+
+        const mealFoods =
+            foods.filter(food => food.meal === meal);
+
+        if (mealFoods.length === 0) return;
+
+        let mealCalories = 0;
+        let mealProtein = 0;
+
+        mealFoods.forEach(food => {
+            mealCalories += Number(food.calories);
+            mealProtein += Number(food.protein);
+        });
+
+        html += `
+        <div class="meal">
+
+            <div class="meal-header">
+                <div class="meal-name">${meal}</div>
+
+                <div class="small">
+                    ${mealCalories} kcal •
+                    ${mealProtein}g protein
+                </div>
+            </div>
+        `;
+
+        mealFoods.forEach(food => {
+
+            html += `
+            <div class="food">
+
+                <div class="food-info">
+
+                    <div class="food-title">
+                        ${escapeHTML(food.name)}
+                    </div>
+
+                    <div class="food-details">
+                        ${food.calories} kcal •
+                        ${food.protein}g protein
+                    </div>
+
+                </div>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteFood(${food.id})">
+                    ✕
+                </button>
+
+            </div>
+            `;
+        });
+
+        html += `</div>`;
+    });
+
+    list.innerHTML = html;
+
+    updateProgress();
+    renderWeight();
 }
-function show(v){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.getElementById(v).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view===v));if(v==="progress")drawChart()}
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>show(b.dataset.view));
-function clearAll(){if(confirm("Delete ALL tracker history? This cannot be undone.")){data={};save();render()}}
-render();
+
+function updateProgress() {
+
+    const foods =
+        data[currentDate].foods || [];
+
+    let calories = 0;
+    let protein = 0;
+
+    foods.forEach(food => {
+        calories += Number(food.calories);
+        protein += Number(food.protein);
+    });
+
+    document.getElementById("totalCalories")
+        .textContent = calories;
+
+    document.getElementById("totalProtein")
+        .textContent = protein;
+
+    const calorieTarget =
+        Number(document.getElementById("calorieTarget").value);
+
+    const proteinTarget =
+        Number(document.getElementById("proteinTarget").value);
+
+    if (calorieTarget > 0) {
+
+        const percentage =
+            Math.min((calories / calorieTarget) * 100, 100);
+
+        document.getElementById("calorieProgress")
+            .style.width = percentage + "%";
+
+        const remaining =
+            calorieTarget - calories;
+
+        document.getElementById("calorieRemaining")
+            .textContent =
+            remaining > 0
+            ? `${remaining} kcal remaining`
+            : `${Math.abs(remaining)} kcal over target`;
+    }
+
+    if (proteinTarget > 0) {
+
+        const percentage =
+            Math.min((protein / proteinTarget) * 100, 100);
+
+        document.getElementById("proteinProgress")
+            .style.width = percentage + "%";
+
+        const remaining =
+            proteinTarget - protein;
+
+        document.getElementById("proteinRemaining")
+            .textContent =
+            remaining > 0
+            ? `${remaining}g protein remaining`
+            : `${Math.abs(remaining)}g over target`;
+    }
+}
+
+function saveWeight() {
+
+    const weight =
+        document.getElementById("weightInput").value;
+
+    if (!weight) {
+        alert("Please enter your weight.");
+        return;
+    }
+
+    data[currentDate].weight = Number(weight);
+
+    saveAll();
+    renderWeight();
+
+    alert("Weight saved!");
+}
+
+function renderWeight() {
+
+    const history =
+        document.getElementById("weightHistory");
+
+    const entries = Object.keys(data)
+        .filter(date => data[date].weight)
+        .sort()
+        .reverse();
+
+    if (entries.length === 0) {
+
+        history.innerHTML =
+            `<div class="empty">
+                No weight records yet.
+            </div>`;
+
+        return;
+    }
+
+    history.innerHTML = entries
+        .slice(0, 7)
+        .map(date => `
+            <div class="weight-item">
+                <span>${date}</span>
+                <strong>${data[date].weight} kg</strong>
+            </div>
+        `)
+        .join("");
+
+    document.getElementById("weightInput").value =
+        data[currentDate].weight || "";
+}
+
+function resetDay() {
+
+    const confirmReset =
+        confirm("Delete all food entries for this day?");
+
+    if (!confirmReset) return;
+
+    data[currentDate].foods = [];
+
+    saveAll();
+    render();
+}
+
+function escapeHTML(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+datePicker.addEventListener("change", function() {
+
+    currentDate = this.value;
+
+    if (!data[currentDate]) {
+        data[currentDate] = {
+            foods: [],
+            weight: ""
+        };
+    }
+
+    saveAll();
+    render();
+});
+
+datePicker.value = todayString();
+
+loadData();
+
 </script>
+
 </body>
 </html>
