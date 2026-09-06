@@ -2,778 +2,870 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#111827">
-<title>Bulk Tracker</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>BulkUp Tracker</title>
 <style>
-* {
-    box-sizing: border-box;
+:root{
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --text:#111827;
+    --muted:#6b7280;
+    --line:#e5e7eb;
+    --primary:#7c3aed;
+    --primary-light:#ede9fe;
+    --orange:#f97316;
+    --green:#10b981;
+    --red:#ef4444;
+    --shadow:0 8px 30px rgba(15,23,42,.07);
 }
-
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #f3f4f6;
-    color: #111827;
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
-
-.container {
-    max-width: 600px;
-    margin: auto;
-    padding: 18px;
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
 }
-
-.header {
-    background: #111827;
-    color: white;
-    padding: 22px;
-    border-radius: 20px;
-    margin-bottom: 16px;
+.app{
+    max-width:600px;
+    margin:auto;
+    padding:18px 16px 100px;
 }
-
-.header h1 {
-    margin: 0;
-    font-size: 27px;
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
 }
-
-.header p {
-    margin: 6px 0 0;
-    color: #d1d5db;
+.logo{
+    font-size:25px;
+    font-weight:800;
+    letter-spacing:-.7px;
 }
-
-.card {
-    background: white;
-    border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 16px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+.logo span{
+    color:var(--primary);
 }
-
-.date-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
+.date{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:3px;
 }
-
-input, select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-    font-size: 16px;
-    margin-top: 6px;
+.icon-btn{
+    width:44px;
+    height:44px;
+    border:0;
+    border-radius:14px;
+    background:var(--card);
+    box-shadow:var(--shadow);
+    font-size:20px;
 }
-
-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #4b5563;
+.hero{
+    background:linear-gradient(135deg,#6d28d9,#8b5cf6);
+    color:white;
+    border-radius:26px;
+    padding:22px;
+    box-shadow:0 12px 30px rgba(124,58,237,.25);
+    margin-bottom:16px;
 }
-
-.target-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+.hero-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
-
-.stat {
-    background: #f9fafb;
-    padding: 14px;
-    border-radius: 14px;
+.hero h2{
+    margin:0;
+    font-size:20px;
 }
-
-.stat-title {
-    font-size: 13px;
-    color: #6b7280;
+.hero p{
+    margin:5px 0 0;
+    opacity:.8;
+    font-size:13px;
 }
-
-.stat-value {
-    font-size: 24px;
-    font-weight: 700;
-    margin-top: 3px;
+.fire{
+    font-size:28px;
 }
-
-.progress {
-    height: 10px;
-    background: #e5e7eb;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-top: 8px;
+.hero-number{
+    font-size:38px;
+    font-weight:800;
+    margin-top:20px;
+    letter-spacing:-1px;
 }
-
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    background: #111827;
-    border-radius: 20px;
-    transition: width 0.3s;
+.hero-number small{
+    font-size:16px;
+    font-weight:500;
+    opacity:.8;
 }
-
-.remaining {
-    font-size: 13px;
-    color: #6b7280;
-    margin-top: 5px;
+.progress{
+    height:9px;
+    background:rgba(255,255,255,.25);
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:10px;
 }
-
-button {
-    border: none;
-    border-radius: 11px;
-    padding: 12px 15px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
+.progress-fill{
+    height:100%;
+    width:0;
+    background:white;
+    border-radius:20px;
+    transition:.4s;
 }
-
-.primary {
-    background: #111827;
-    color: white;
+.hero-bottom{
+    display:flex;
+    justify-content:space-between;
+    margin-top:9px;
+    font-size:12px;
+    opacity:.85;
 }
-
-.secondary {
-    background: #e5e7eb;
-    color: #111827;
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:16px;
 }
-
-.danger {
-    background: #fee2e2;
-    color: #b91c1c;
+.stat-card{
+    background:var(--card);
+    border-radius:20px;
+    padding:17px;
+    box-shadow:var(--shadow);
 }
-
-.add-button {
-    width: 100%;
-    margin-top: 12px;
+.stat-icon{
+    font-size:22px;
 }
-
-.meal {
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-    padding: 14px;
-    margin-top: 12px;
+.stat-title{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:8px;
 }
-
-.meal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.stat-number{
+    font-size:25px;
+    font-weight:800;
+    margin-top:3px;
 }
-
-.meal-name {
-    font-weight: 700;
-    font-size: 17px;
+.stat-number small{
+    font-size:12px;
+    color:var(--muted);
+    font-weight:500;
 }
-
-.food {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #f0f0f0;
+.section{
+    margin-top:20px;
 }
-
-.food:last-child {
-    border-bottom: none;
+.section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
 }
-
-.food-info {
-    flex: 1;
+.section-head h3{
+    margin:0;
+    font-size:18px;
 }
-
-.food-title {
-    font-weight: 600;
+.section-head button{
+    border:0;
+    background:none;
+    color:var(--primary);
+    font-weight:700;
 }
-
-.food-details {
-    font-size: 13px;
-    color: #6b7280;
-    margin-top: 3px;
+.meal-card{
+    background:var(--card);
+    border-radius:20px;
+    padding:15px;
+    margin-bottom:11px;
+    box-shadow:var(--shadow);
 }
-
-.delete-btn {
-    background: transparent;
-    color: #ef4444;
-    padding: 5px 8px;
+.meal-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
-
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+.meal-icon{
+    width:43px;
+    height:43px;
+    display:grid;
+    place-items:center;
+    background:var(--primary-light);
+    border-radius:13px;
+    font-size:21px;
 }
-
-.full {
-    grid-column: 1 / -1;
+.meal-info{
+    flex:1;
 }
-
-.button-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
+.meal-name{
+    font-weight:750;
 }
-
-.button-row button {
-    flex: 1;
+.meal-total{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:3px;
 }
-
-.empty {
-    text-align: center;
-    color: #6b7280;
-    padding: 15px;
+.add-meal{
+    border:0;
+    background:#f3f4f6;
+    width:36px;
+    height:36px;
+    border-radius:12px;
+    font-size:22px;
 }
-
-.small {
-    font-size: 12px;
-    color: #6b7280;
+.food-row{
+    display:flex;
+    align-items:center;
+    padding:12px 0 2px 55px;
+    border-bottom:1px solid var(--line);
 }
-
-.weight-history {
-    margin-top: 10px;
+.food-row:last-child{
+    border-bottom:0;
 }
-
-.weight-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
+.food-info{
+    flex:1;
 }
-
-@media (max-width: 400px) {
-    .target-grid,
-    .form-grid {
-        grid-template-columns: 1fr;
+.food-name{
+    font-weight:600;
+    font-size:14px;
+}
+.food-meta{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:3px;
+}
+.delete{
+    border:0;
+    background:none;
+    color:#ef4444;
+    font-size:17px;
+    padding:8px;
+}
+.quick-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+.quick-food{
+    border:0;
+    background:var(--card);
+    border-radius:17px;
+    padding:14px;
+    text-align:left;
+    box-shadow:var(--shadow);
+}
+.quick-food:active{
+    transform:scale(.97);
+}
+.quick-food b{
+    display:block;
+    margin-top:7px;
+}
+.quick-food span{
+    color:var(--muted);
+    font-size:11px;
+}
+.form-card{
+    background:var(--card);
+    border-radius:22px;
+    padding:18px;
+    box-shadow:var(--shadow);
+}
+label{
+    display:block;
+    color:var(--muted);
+    font-size:12px;
+    font-weight:650;
+    margin-bottom:5px;
+}
+input,select{
+    width:100%;
+    border:1px solid var(--line);
+    background:#fafafa;
+    color:var(--text);
+    padding:13px;
+    border-radius:13px;
+    font-size:15px;
+    outline:none;
+}
+input:focus,select:focus{
+    border-color:var(--primary);
+}
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+}
+.full{
+    grid-column:1/-1;
+}
+.primary-btn{
+    width:100%;
+    border:0;
+    background:var(--primary);
+    color:white;
+    padding:14px;
+    border-radius:14px;
+    font-size:15px;
+    font-weight:750;
+    margin-top:12px;
+}
+.weight-card{
+    background:var(--card);
+    border-radius:22px;
+    padding:18px;
+    box-shadow:var(--shadow);
+}
+.weight-main{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+.weight-number{
+    font-size:32px;
+    font-weight:800;
+}
+.weight-number small{
+    font-size:13px;
+    color:var(--muted);
+}
+.weight-history{
+    margin-top:15px;
+}
+.weight-line{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+    font-size:13px;
+}
+.empty{
+    color:var(--muted);
+    text-align:center;
+    padding:20px 10px;
+    font-size:13px;
+}
+.settings{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    z-index:10;
+    align-items:flex-end;
+}
+.settings.open{
+    display:flex;
+}
+.sheet{
+    width:100%;
+    max-width:600px;
+    margin:auto;
+    background:var(--card);
+    border-radius:25px 25px 0 0;
+    padding:22px;
+}
+.sheet h2{
+    margin-top:0;
+}
+.close{
+    float:right;
+    border:0;
+    background:#f3f4f6;
+    width:36px;
+    height:36px;
+    border-radius:50%;
+}
+.toast{
+    position:fixed;
+    bottom:25px;
+    left:50%;
+    transform:translateX(-50%) translateY(100px);
+    background:#111827;
+    color:white;
+    padding:12px 18px;
+    border-radius:14px;
+    font-size:13px;
+    opacity:0;
+    transition:.3s;
+    z-index:20;
+}
+.toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+}
+@media(max-width:380px){
+    .stats{
+        grid-template-columns:1fr;
     }
-
-    .full {
-        grid-column: auto;
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+    .full{
+        grid-column:auto;
+    }
+}
+@media(prefers-color-scheme:dark){
+    :root{
+        --bg:#0b1120;
+        --card:#111827;
+        --text:#f9fafb;
+        --muted:#9ca3af;
+        --line:#273244;
+        --primary-light:#2e1065;
+    }
+    input,select,
+    .add-meal,
+    .close{
+        background:#182235;
+        color:var(--text);
     }
 }
 </style>
 </head>
-
 <body>
-
-<div class="container">
-
-    <div class="header">
-        <h1>💪 Bulk Tracker</h1>
-        <p>Track your calories, protein and progress</p>
+<div class="app">
+    <div class="topbar">
+        <div>
+            <div class="logo">Bulk<span>Up</span> 💪</div>
+            <div class="date" id="todayText"></div>
+        </div>
+        <button class="icon-btn" onclick="openSettings()">⚙️</button>
     </div>
-
-    <!-- DATE -->
-    <div class="card">
-        <div class="date-row">
+    <!-- CALORIE HERO -->
+    <div class="hero">
+        <div class="hero-top">
             <div>
-                <label>TRACKING DATE</label>
-                <input type="date" id="datePicker">
+                <h2>Daily Calories</h2>
+                <p>Keep moving toward your bulk goal</p>
+            </div>
+            <div class="fire">🔥</div>
+        </div>
+        <div class="hero-number">
+            <span id="calories">0</span>
+            <small>/ <span id="calorieTargetDisplay">2800</span> kcal</small>
+        </div>
+        <div class="progress">
+            <div class="progress-fill" id="calorieBar"></div>
+        </div>
+        <div class="hero-bottom">
+            <span id="caloriePercent">0% completed</span>
+            <span id="calorieLeft">2800 kcal left</span>
+        </div>
+    </div>
+    <!-- QUICK STATS -->
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-icon">💪</div>
+            <div class="stat-title">PROTEIN</div>
+            <div class="stat-number">
+                <span id="protein">0</span>
+                <small>g</small>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⚖️</div>
+            <div class="stat-title">WEIGHT</div>
+            <div class="stat-number">
+                <span id="currentWeight">--</span>
+                <small>kg</small>
             </div>
         </div>
     </div>
-
-    <!-- TARGETS -->
-    <div class="card">
-        <h2>🎯 Daily Targets</h2>
-
-        <div class="target-grid">
-            <div>
-                <label>Calories Target</label>
-                <input type="number" id="calorieTarget" placeholder="e.g. 2800">
-            </div>
-
-            <div>
-                <label>Protein Target (g)</label>
-                <input type="number" id="proteinTarget" placeholder="e.g. 130">
-            </div>
+    <!-- QUICK FOODS -->
+    <div class="section">
+        <div class="section-head">
+            <h3>⚡ Quick Add</h3>
         </div>
-
-        <button class="primary add-button" onclick="saveTargets()">
-            Save Targets
-        </button>
-    </div>
-
-    <!-- PROGRESS -->
-    <div class="card">
-        <h2>📊 Today's Progress</h2>
-
-        <div class="stat">
-            <div class="stat-title">Calories</div>
-            <div class="stat-value">
-                <span id="totalCalories">0</span>
-                <span class="small">kcal</span>
-            </div>
-
-            <div class="progress">
-                <div class="progress-bar" id="calorieProgress"></div>
-            </div>
-
-            <div class="remaining" id="calorieRemaining">
-                Set your calorie target
-            </div>
-        </div>
-
-        <br>
-
-        <div class="stat">
-            <div class="stat-title">Protein</div>
-            <div class="stat-value">
-                <span id="totalProtein">0</span>
-                <span class="small">g</span>
-            </div>
-
-            <div class="progress">
-                <div class="progress-bar" id="proteinProgress"></div>
-            </div>
-
-            <div class="remaining" id="proteinRemaining">
-                Set your protein target
-            </div>
+        <div class="quick-grid">
+            <button class="quick-food" onclick="quickAdd('Eggs',78,6,'Breakfast')">
+                🥚
+                <b>1 Egg</b>
+                <span>78 kcal • 6g protein</span>
+            </button>
+            <button class="quick-food" onclick="quickAdd('Banana',105,1.3,'Breakfast')">
+                🍌
+                <b>1 Banana</b>
+                <span>105 kcal • 1.3g protein</span>
+            </button>
+            <button class="quick-food" onclick="quickAdd('Chicken Breast',165,31,'Lunch')">
+                🍗
+                <b>Chicken</b>
+                <span>165 kcal • 31g protein</span>
+            </button>
+            <button class="quick-food" onclick="quickAdd('Milk',122,6.3,'Snacks')">
+                🥛
+                <b>Milk</b>
+                <span>122 kcal • 6.3g protein</span>
+            </button>
         </div>
     </div>
-
-    <!-- ADD FOOD -->
-    <div class="card">
-        <h2>🍽️ Add Food</h2>
-
-        <div class="form-grid">
-
-            <div class="full">
-                <label>Meal</label>
-                <select id="mealType">
-                    <option>Breakfast</option>
-                    <option>Lunch</option>
-                    <option>Snacks</option>
-                    <option>Dinner</option>
-                    <option>Other</option>
-                </select>
-            </div>
-
-            <div class="full">
-                <label>Food Name</label>
-                <input type="text" id="foodName" placeholder="e.g. Chicken breast">
-            </div>
-
-            <div>
-                <label>Calories</label>
-                <input type="number" id="foodCalories" placeholder="Calories">
-            </div>
-
-            <div>
-                <label>Protein (g)</label>
-                <input type="number" id="foodProtein" placeholder="Protein">
-            </div>
-
-        </div>
-
-        <button class="primary add-button" onclick="addFood()">
-            + Add Food
-        </button>
-    </div>
-
     <!-- MEALS -->
-    <div class="card">
-        <h2>🥗 Today's Meals</h2>
-        <div id="mealList"></div>
+    <div class="section">
+        <div class="section-head">
+            <h3>🍽️ Today's Meals</h3>
+            <button onclick="scrollToAdd()">+ Add food</button>
+        </div>
+        <div id="meals"></div>
     </div>
-
+    <!-- ADD FOOD -->
+    <div class="section" id="addSection">
+        <div class="section-head">
+            <h3>➕ Add Food</h3>
+        </div>
+        <div class="form-card">
+            <div class="form-grid">
+                <div class="full">
+                    <label>FOOD NAME</label>
+                    <input id="foodName" placeholder="e.g. Paneer">
+                </div>
+                <div>
+                    <label>CALORIES</label>
+                    <input id="foodCalories" type="number" placeholder="kcal">
+                </div>
+                <div>
+                    <label>PROTEIN</label>
+                    <input id="foodProtein" type="number" step="0.1" placeholder="grams">
+                </div>
+                <div class="full">
+                    <label>MEAL</label>
+                    <select id="mealType">
+                        <option>Breakfast</option>
+                        <option>Lunch</option>
+                        <option>Snacks</option>
+                        <option>Dinner</option>
+                    </select>
+                </div>
+            </div>
+            <button class="primary-btn" onclick="addFood()">
+                Add to Today's Meals
+            </button>
+        </div>
+    </div>
     <!-- WEIGHT -->
-    <div class="card">
-        <h2>⚖️ Weight Tracking</h2>
-
-        <label>Today's Weight (kg)</label>
-        <input type="number" id="weightInput" step="0.1" placeholder="Enter weight">
-
-        <button class="primary add-button" onclick="saveWeight()">
-            Save Weight
-        </button>
-
-        <div class="weight-history" id="weightHistory"></div>
+    <div class="section">
+        <div class="section-head">
+            <h3>⚖️ Weight</h3>
+        </div>
+        <div class="weight-card">
+            <div class="weight-main">
+                <div>
+                    <div class="stat-title">TODAY'S WEIGHT</div>
+                    <div class="weight-number">
+                        <span id="weightBig">--</span>
+                        <small>kg</small>
+                    </div>
+                </div>
+                <div style="width:130px">
+                    <input id="weightInput" type="number" step="0.1" placeholder="Weight">
+                    <button class="primary-btn" onclick="saveWeight()">Save</button>
+                </div>
+            </div>
+            <div class="weight-history" id="weightHistory"></div>
+        </div>
     </div>
-
-    <!-- RESET -->
-    <div class="card">
-        <button class="danger add-button" onclick="resetDay()">
-            🗑️ Reset Today's Food
-        </button>
-    </div>
-
 </div>
-
+<!-- SETTINGS -->
+<div class="settings" id="settings">
+    <div class="sheet">
+        <button class="close" onclick="closeSettings()">✕</button>
+        <h2>⚙️ Goals</h2>
+        <label>DAILY CALORIE TARGET</label>
+        <input id="settingsCalories" type="number">
+        <br><br>
+        <label>DAILY PROTEIN TARGET</label>
+        <input id="settingsProtein" type="number">
+        <button class="primary-btn" onclick="saveGoals()">
+            Save Goals
+        </button>
+        <button
+            class="primary-btn"
+            style="background:#fee2e2;color:#b91c1c"
+            onclick="clearAllData()">
+            Reset All Data
+        </button>
+    </div>
+</div>
+<div class="toast" id="toast"></div>
 <script>
-
-let currentDate = "";
-let data = {};
-
-const datePicker = document.getElementById("datePicker");
-
-function todayString() {
+const KEY = "bulkupTrackerV2";
+let appData = JSON.parse(localStorage.getItem(KEY)) || {
+    goals:{
+        calories:2800,
+        protein:130
+    },
+    days:{}
+};
+let selectedDate = today();
+function today(){
     const d = new Date();
-    const offset = d.getTimezoneOffset();
-    const local = new Date(d.getTime() - offset * 60000);
-    return local.toISOString().split("T")[0];
+    return d.toISOString().split("T")[0];
 }
-
-function loadData() {
-    const saved = localStorage.getItem("bulkTrackerData");
-
-    if (saved) {
-        data = JSON.parse(saved);
-    }
-
-    currentDate = datePicker.value;
-
-    if (!data[currentDate]) {
-        data[currentDate] = {
-            foods: [],
-            weight: ""
+function getDay(){
+    if(!appData.days[selectedDate]){
+        appData.days[selectedDate] = {
+            foods:[],
+            weight:null
         };
     }
-
-    const savedTargets = localStorage.getItem("bulkTargets");
-
-    if (savedTargets) {
-        const targets = JSON.parse(savedTargets);
-
-        document.getElementById("calorieTarget").value =
-            targets.calories || "";
-
-        document.getElementById("proteinTarget").value =
-            targets.protein || "";
-    }
-
-    render();
+    return appData.days[selectedDate];
 }
-
-function saveAll() {
-    localStorage.setItem(
-        "bulkTrackerData",
-        JSON.stringify(data)
-    );
+function save(){
+    localStorage.setItem(KEY,JSON.stringify(appData));
 }
-
-function saveTargets() {
-
-    const calories =
-        Number(document.getElementById("calorieTarget").value);
-
-    const protein =
-        Number(document.getElementById("proteinTarget").value);
-
-    localStorage.setItem(
-        "bulkTargets",
-        JSON.stringify({
-            calories: calories,
-            protein: protein
-        })
-    );
-
-    updateProgress();
-
-    alert("Targets saved!");
+function showToast(message){
+    const toast=document.getElementById("toast");
+    toast.textContent=message;
+    toast.classList.add("show");
+    setTimeout(()=>{
+        toast.classList.remove("show");
+    },1800);
 }
-
-function addFood() {
-
-    const meal =
-        document.getElementById("mealType").value;
-
-    const name =
-        document.getElementById("foodName").value.trim();
-
-    const calories =
-        Number(document.getElementById("foodCalories").value);
-
-    const protein =
-        Number(document.getElementById("foodProtein").value);
-
-    if (!name) {
-        alert("Please enter the food name.");
+function addFood(){
+    const name=document.getElementById("foodName").value.trim();
+    const calories=Number(document.getElementById("foodCalories").value);
+    const protein=Number(document.getElementById("foodProtein").value);
+    const meal=document.getElementById("mealType").value;
+    if(!name){
+        showToast("Enter a food name");
         return;
     }
-
-    if (calories < 0 || protein < 0) {
-        alert("Calories and protein cannot be negative.");
+    if(calories<0 || protein<0){
+        showToast("Enter valid values");
         return;
     }
-
-    data[currentDate].foods.push({
-        id: Date.now(),
-        meal: meal,
-        name: name,
-        calories: calories,
-        protein: protein
+    getDay().foods.push({
+        id:Date.now(),
+        name,
+        calories,
+        protein,
+        meal
     });
-
-    saveAll();
-
-    document.getElementById("foodName").value = "";
-    document.getElementById("foodCalories").value = "";
-    document.getElementById("foodProtein").value = "";
-
+    save();
+    document.getElementById("foodName").value="";
+    document.getElementById("foodCalories").value="";
+    document.getElementById("foodProtein").value="";
     render();
+    showToast("Food added ✓");
 }
-
-function deleteFood(id) {
-
-    data[currentDate].foods =
-        data[currentDate].foods.filter(food => food.id !== id);
-
-    saveAll();
+function quickAdd(name,calories,protein,meal){
+    getDay().foods.push({
+        id:Date.now(),
+        name,
+        calories,
+        protein,
+        meal
+    });
+    save();
     render();
+    showToast(name+" added ✓");
 }
-
-function render() {
-
-    const list =
-        document.getElementById("mealList");
-
-    const foods =
-        data[currentDate].foods || [];
-
-    if (foods.length === 0) {
-
-        list.innerHTML =
-            `<div class="empty">
-                No foods added today.<br>
-                Add your first meal above.
-            </div>`;
-
-        updateProgress();
-        renderWeight();
-        return;
-    }
-
-    const meals = [
-        "Breakfast",
-        "Lunch",
-        "Snacks",
-        "Dinner",
-        "Other"
+function deleteFood(id){
+    getDay().foods =
+        getDay().foods.filter(food=>food.id!==id);
+    save();
+    render();
+    showToast("Food removed");
+}
+function render(){
+    const day=getDay();
+    let calories=0;
+    let protein=0;
+    day.foods.forEach(food=>{
+        calories+=Number(food.calories);
+        protein+=Number(food.protein);
+    });
+    document.getElementById("calories").textContent=Math.round(calories);
+    document.getElementById("protein").textContent=Math.round(protein*10)/10;
+    const target=Number(appData.goals.calories)||2800;
+    const proteinTarget=Number(appData.goals.protein)||130;
+    document.getElementById("calorieTargetDisplay").textContent=target;
+    const percent=Math.min((calories/target)*100,100);
+    document.getElementById("calorieBar").style.width=percent+"%";
+    document.getElementById("caloriePercent").textContent=
+        Math.round(percent)+"% completed";
+    const left=target-calories;
+    document.getElementById("calorieLeft").textContent=
+        left>=0
+        ? Math.round(left)+" kcal left"
+        : Math.round(Math.abs(left))+" kcal over";
+    renderMeals();
+    renderWeight();
+}
+function renderMeals(){
+    const meals=[
+        ["Breakfast","🍳"],
+        ["Lunch","🍛"],
+        ["Snacks","🥜"],
+        ["Dinner","🍽️"]
     ];
-
-    let html = "";
-
-    meals.forEach(meal => {
-
-        const mealFoods =
-            foods.filter(food => food.meal === meal);
-
-        if (mealFoods.length === 0) return;
-
-        let mealCalories = 0;
-        let mealProtein = 0;
-
-        mealFoods.forEach(food => {
-            mealCalories += Number(food.calories);
-            mealProtein += Number(food.protein);
+    const foods=getDay().foods;
+    let html="";
+    meals.forEach(([meal,icon])=>{
+        const list=foods.filter(f=>f.meal===meal);
+        let totalCal=0;
+        let totalProtein=0;
+        list.forEach(f=>{
+            totalCal+=Number(f.calories);
+            totalProtein+=Number(f.protein);
         });
-
-        html += `
-        <div class="meal">
-
-            <div class="meal-header">
-                <div class="meal-name">${meal}</div>
-
-                <div class="small">
-                    ${mealCalories} kcal •
-                    ${mealProtein}g protein
+        html+=`
+        <div class="meal-card">
+            <div class="meal-head">
+                <div class="meal-icon">${icon}</div>
+                <div class="meal-info">
+                    <div class="meal-name">${meal}</div>
+                    <div class="meal-total">
+                        ${totalCal} kcal • ${Math.round(totalProtein*10)/10}g protein
+                    </div>
                 </div>
+                <button class="add-meal"
+                    onclick="selectMeal('${meal}')">
+                    +
+                </button>
             </div>
         `;
-
-        mealFoods.forEach(food => {
-
-            html += `
-            <div class="food">
-
+        list.forEach(food=>{
+            html+=`
+            <div class="food-row">
                 <div class="food-info">
-
-                    <div class="food-title">
-                        ${escapeHTML(food.name)}
+                    <div class="food-name">${escapeHTML(food.name)}</div>
+                    <div class="food-meta">
+                        ${food.calories} kcal • ${food.protein}g protein
                     </div>
-
-                    <div class="food-details">
-                        ${food.calories} kcal •
-                        ${food.protein}g protein
-                    </div>
-
                 </div>
-
                 <button
-                    class="delete-btn"
+                    class="delete"
                     onclick="deleteFood(${food.id})">
                     ✕
                 </button>
-
             </div>
             `;
         });
-
-        html += `</div>`;
-    });
-
-    list.innerHTML = html;
-
-    updateProgress();
-    renderWeight();
-}
-
-function updateProgress() {
-
-    const foods =
-        data[currentDate].foods || [];
-
-    let calories = 0;
-    let protein = 0;
-
-    foods.forEach(food => {
-        calories += Number(food.calories);
-        protein += Number(food.protein);
-    });
-
-    document.getElementById("totalCalories")
-        .textContent = calories;
-
-    document.getElementById("totalProtein")
-        .textContent = protein;
-
-    const calorieTarget =
-        Number(document.getElementById("calorieTarget").value);
-
-    const proteinTarget =
-        Number(document.getElementById("proteinTarget").value);
-
-    if (calorieTarget > 0) {
-
-        const percentage =
-            Math.min((calories / calorieTarget) * 100, 100);
-
-        document.getElementById("calorieProgress")
-            .style.width = percentage + "%";
-
-        const remaining =
-            calorieTarget - calories;
-
-        document.getElementById("calorieRemaining")
-            .textContent =
-            remaining > 0
-            ? `${remaining} kcal remaining`
-            : `${Math.abs(remaining)} kcal over target`;
-    }
-
-    if (proteinTarget > 0) {
-
-        const percentage =
-            Math.min((protein / proteinTarget) * 100, 100);
-
-        document.getElementById("proteinProgress")
-            .style.width = percentage + "%";
-
-        const remaining =
-            proteinTarget - protein;
-
-        document.getElementById("proteinRemaining")
-            .textContent =
-            remaining > 0
-            ? `${remaining}g protein remaining`
-            : `${Math.abs(remaining)}g over target`;
-    }
-}
-
-function saveWeight() {
-
-    const weight =
-        document.getElementById("weightInput").value;
-
-    if (!weight) {
-        alert("Please enter your weight.");
-        return;
-    }
-
-    data[currentDate].weight = Number(weight);
-
-    saveAll();
-    renderWeight();
-
-    alert("Weight saved!");
-}
-
-function renderWeight() {
-
-    const history =
-        document.getElementById("weightHistory");
-
-    const entries = Object.keys(data)
-        .filter(date => data[date].weight)
-        .sort()
-        .reverse();
-
-    if (entries.length === 0) {
-
-        history.innerHTML =
-            `<div class="empty">
-                No weight records yet.
-            </div>`;
-
-        return;
-    }
-
-    history.innerHTML = entries
-        .slice(0, 7)
-        .map(date => `
-            <div class="weight-item">
-                <span>${date}</span>
-                <strong>${data[date].weight} kg</strong>
+        if(list.length===0){
+            html+=`
+            <div class="empty">
+                Nothing added yet
             </div>
-        `)
-        .join("");
-
-    document.getElementById("weightInput").value =
-        data[currentDate].weight || "";
+            `;
+        }
+        html+=`</div>`;
+    });
+    document.getElementById("meals").innerHTML=html;
 }
-
-function resetDay() {
-
-    const confirmReset =
-        confirm("Delete all food entries for this day?");
-
-    if (!confirmReset) return;
-
-    data[currentDate].foods = [];
-
-    saveAll();
-    render();
+function selectMeal(meal){
+    document.getElementById("mealType").value=meal;
+    scrollToAdd();
+    setTimeout(()=>{
+        document.getElementById("foodName").focus();
+    },400);
 }
-
-function escapeHTML(text) {
-
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+function scrollToAdd(){
+    document.getElementById("addSection")
+        .scrollIntoView({
+            behavior:"smooth",
+            block:"center"
+        });
 }
-
-datePicker.addEventListener("change", function() {
-
-    currentDate = this.value;
-
-    if (!data[currentDate]) {
-        data[currentDate] = {
-            foods: [],
-            weight: ""
-        };
+function saveWeight(){
+    const value=Number(
+        document.getElementById("weightInput").value
+    );
+    if(!value){
+        showToast("Enter your weight");
+        return;
     }
-
-    saveAll();
+    getDay().weight=value;
+    save();
+    renderWeight();
+    showToast("Weight saved ✓");
+}
+function renderWeight(){
+    const day=getDay();
+    document.getElementById("currentWeight").textContent=
+        day.weight || "--";
+    document.getElementById("weightBig").textContent=
+        day.weight || "--";
+    document.getElementById("weightInput").value=
+        day.weight || "";
+    const dates=Object.keys(appData.days)
+        .filter(date=>appData.days[date].weight)
+        .sort()
+        .reverse()
+        .slice(0,7);
+    let html="";
+    dates.forEach(date=>{
+        html+=`
+        <div class="weight-line">
+            <span>${formatDate(date)}</span>
+            <strong>${appData.days[date].weight} kg</strong>
+        </div>
+        `;
+    });
+    document.getElementById("weightHistory").innerHTML=html;
+}
+function formatDate(date){
+    const d=new Date(date+"T00:00:00");
+    return d.toLocaleDateString("en-IN",{
+        day:"numeric",
+        month:"short"
+    });
+}
+function openSettings(){
+    document.getElementById("settingsCalories").value=
+        appData.goals.calories;
+    document.getElementById("settingsProtein").value=
+        appData.goals.protein;
+    document.getElementById("settings")
+        .classList.add("open");
+}
+function closeSettings(){
+    document.getElementById("settings")
+        .classList.remove("open");
+}
+function saveGoals(){
+    const calories=Number(
+        document.getElementById("settingsCalories").value
+    );
+    const protein=Number(
+        document.getElementById("settingsProtein").value
+    );
+    if(calories<=0 || protein<=0){
+        showToast("Enter valid goals");
+        return;
+    }
+    appData.goals.calories=calories;
+    appData.goals.protein=protein;
+    save();
     render();
-});
-
-datePicker.value = todayString();
-
-loadData();
-
+    closeSettings();
+    showToast("Goals updated ✓");
+}
+function clearAllData(){
+    if(!confirm("Delete all tracker data?")){
+        return;
+    }
+    localStorage.removeItem(KEY);
+    appData={
+        goals:{
+            calories:2800,
+            protein:130
+        },
+        days:{}
+    };
+    closeSettings();
+    render();
+    showToast("All data cleared");
+}
+function escapeHTML(text){
+    return text
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+document.getElementById("todayText").textContent =
+    new Date().toLocaleDateString("en-IN",{
+        weekday:"long",
+        day:"numeric",
+        month:"long"
+    });
+render();
 </script>
-
 </body>
 </html>
