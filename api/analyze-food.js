@@ -1,110 +1,147 @@
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
+  // CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-    if (req.method !== "POST") {
-        return res.status(405).json({
-            error: "Method not allowed"
-        });
+  // Browser preflight request
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  // Only allow POST
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      error: "Method not allowed"
+    });
+  }
+
+  try {
+    const { image } = req.body || {};
+
+    if (!image) {
+      return res.status(400).json({
+        error: "No image received"
+      });
     }
 
-    try {
+    const apiKey = process.env.OPENAI_API_KEY;
 
-        const { image } = req.body;
+    if (!apiKey) {
+      return res.status(500).json({
+        error: "OPENAI_API_KEY is not configured"
+      });
+    }
 
-        if (!image) {
-            return res.status(400).json({
-                error: "No image received"
-            });
-        }
+    const openaiResponse = await fetch(
+      "https://api.openai.com/v1/responses",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "gpt-5.6-luna",
 
-        const response = await fetch(
-            "https://api.openai.com/v1/responses",
+          input: [
             {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization":
-                        `Bearer ${process.env.OPENAI_API_KEY}`
-                },
-
-                body: JSON.stringify({
-
-                    model: "gpt-5.6-luna",
-
-                    input: [
-                        {
-                            role: "user",
-
-                            content: [
-
-                                {
-                                    type: "input_text",
-
-                                    text: `
+              role: "user",
+              content: [
+                {
+                  type: "input_text",
+                  text: `
 Analyze this food photo.
 
-Identify the foods visible and estimate
-the approximate portion sizes.
+Identify the food as accurately as possible and estimate the nutrition for the visible portion.
 
-Return ONLY valid JSON in this format:
+Return ONLY valid JSON in exactly this format:
 
 {
-  "foodName": "string",
-  "foods": [
-    {
-      "name": "string",
-      "portion": "string"
-    }
-  ],
-  "calories": number,
-  "protein": number,
-  "fat": number,
-  "fibre": number
+  "foodName": "name of food",
+  "calories": 0,
+  "protein": 0,
+  "fat": 0,
+  "fibre": 0
 }
 
-Nutrition values must be estimates.
-Do not claim that the values are exact.
-                                    `
-                                },
+Use numbers only for calories, protein, fat and fibre.
+Calories should be kcal.
+Protein, fat and fibre should be grams.
 
-                                {
-                                    type: "input_image",
-                                    image_url: image
-                                }
-
-                            ]
-                        }
-                    ]
-
-                })
-
+If the portion size cannot be determined exactly, give a reasonable estimate and do not invent excessive precision.
+                  `
+                },
+                {
+                  type: "input_image",
+                  image_url: image
+                }
+              ]
             }
-        );
+          ]
+        })
+      }
+    );
 
+    const data = await openaiResponse.json();
 
-        const data = await response.json();
+    if (!openaiResponse.ok) {
+      console.error("OpenAI error:", data);
 
-
-        if (!response.ok) {
-
-            return res.status(response.status).json({
-                error: data
-            });
-
-        }
-
-
-        return res.status(200).json(data);
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            error: "AI analysis failed"
-        });
-
+      return res.status(openaiResponse.status).json({
+        error: data.error?.message || "OpenAI request failed"
+      });
     }
 
-}
+    // Responses API normally provides output_text
+    let outputText = data.output_text || "";
+
+    // Fallback if output_text isn't available
+    if (!outputText && data.output) {
+      for (const item of data.output) {
+        if (item.content) {
+          for (const content of item.content) {
+            if (content.text) {
+              outputText += content.text;
+            }
+          }
+        }
+      }
+    }
+
+    if (!outputText) {
+      return res.status(500).json({
+        error: "AI returned no analysis"
+      });
+    }
+
+    // Remove accidental markdown code fences
+    outputText = outputText
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .trim();
+
+    let result;
+
+    try {
+      result = JSON.parse(outputText);
+    } catch (error) {
+      console.error("Invalid AI JSON:", outputText);
+
+      return res.status(500).json({
+        error: "AI returned invalid nutrition data"
+      });
+    }
+
+    return res.status(200).json({
+      output_text: JSON.stringify(result)
+    });
+
+  } catch (error) {
+    console.error("Server error:", error);
+
+    return res.status(500).json({
+      error: error.message || "Server error"
+    });
+  }
+};
