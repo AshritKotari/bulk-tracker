@@ -2,870 +2,2168 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0f172a">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta name="theme-color" content="#6d5dfc">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
 <title>BulkUp Tracker</title>
+
 <style>
-:root{
-    --bg:#f5f7fb;
-    --card:#ffffff;
-    --text:#111827;
-    --muted:#6b7280;
-    --line:#e5e7eb;
-    --primary:#7c3aed;
-    --primary-light:#ede9fe;
-    --orange:#f97316;
-    --green:#10b981;
-    --red:#ef4444;
-    --shadow:0 8px 30px rgba(15,23,42,.07);
-}
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
-}
-.app{
-    max-width:600px;
-    margin:auto;
-    padding:18px 16px 100px;
-}
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:18px;
-}
-.logo{
-    font-size:25px;
-    font-weight:800;
-    letter-spacing:-.7px;
-}
-.logo span{
-    color:var(--primary);
-}
-.date{
-    color:var(--muted);
-    font-size:13px;
-    margin-top:3px;
-}
-.icon-btn{
-    width:44px;
-    height:44px;
-    border:0;
-    border-radius:14px;
-    background:var(--card);
-    box-shadow:var(--shadow);
-    font-size:20px;
-}
-.hero{
-    background:linear-gradient(135deg,#6d28d9,#8b5cf6);
-    color:white;
-    border-radius:26px;
-    padding:22px;
-    box-shadow:0 12px 30px rgba(124,58,237,.25);
-    margin-bottom:16px;
-}
-.hero-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-.hero h2{
-    margin:0;
-    font-size:20px;
-}
-.hero p{
-    margin:5px 0 0;
-    opacity:.8;
-    font-size:13px;
-}
-.fire{
-    font-size:28px;
-}
-.hero-number{
-    font-size:38px;
-    font-weight:800;
-    margin-top:20px;
-    letter-spacing:-1px;
-}
-.hero-number small{
-    font-size:16px;
-    font-weight:500;
-    opacity:.8;
-}
-.progress{
-    height:9px;
-    background:rgba(255,255,255,.25);
-    border-radius:20px;
-    overflow:hidden;
-    margin-top:10px;
-}
-.progress-fill{
-    height:100%;
-    width:0;
-    background:white;
-    border-radius:20px;
-    transition:.4s;
-}
-.hero-bottom{
-    display:flex;
-    justify-content:space-between;
-    margin-top:9px;
-    font-size:12px;
-    opacity:.85;
-}
-.stats{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin-bottom:16px;
-}
-.stat-card{
-    background:var(--card);
-    border-radius:20px;
-    padding:17px;
-    box-shadow:var(--shadow);
-}
-.stat-icon{
-    font-size:22px;
-}
-.stat-title{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:8px;
-}
-.stat-number{
-    font-size:25px;
-    font-weight:800;
-    margin-top:3px;
-}
-.stat-number small{
-    font-size:12px;
-    color:var(--muted);
-    font-weight:500;
-}
-.section{
-    margin-top:20px;
-}
-.section-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
-}
-.section-head h3{
-    margin:0;
-    font-size:18px;
-}
-.section-head button{
-    border:0;
-    background:none;
-    color:var(--primary);
-    font-weight:700;
-}
-.meal-card{
-    background:var(--card);
-    border-radius:20px;
-    padding:15px;
-    margin-bottom:11px;
-    box-shadow:var(--shadow);
-}
-.meal-head{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-.meal-icon{
-    width:43px;
-    height:43px;
-    display:grid;
-    place-items:center;
-    background:var(--primary-light);
-    border-radius:13px;
-    font-size:21px;
-}
-.meal-info{
-    flex:1;
-}
-.meal-name{
-    font-weight:750;
-}
-.meal-total{
-    font-size:12px;
-    color:var(--muted);
-    margin-top:3px;
-}
-.add-meal{
-    border:0;
-    background:#f3f4f6;
-    width:36px;
-    height:36px;
-    border-radius:12px;
-    font-size:22px;
-}
-.food-row{
-    display:flex;
-    align-items:center;
-    padding:12px 0 2px 55px;
-    border-bottom:1px solid var(--line);
-}
-.food-row:last-child{
-    border-bottom:0;
-}
-.food-info{
-    flex:1;
-}
-.food-name{
-    font-weight:600;
-    font-size:14px;
-}
-.food-meta{
-    color:var(--muted);
-    font-size:11px;
-    margin-top:3px;
-}
-.delete{
-    border:0;
-    background:none;
-    color:#ef4444;
-    font-size:17px;
-    padding:8px;
-}
-.quick-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-.quick-food{
-    border:0;
-    background:var(--card);
-    border-radius:17px;
-    padding:14px;
-    text-align:left;
-    box-shadow:var(--shadow);
-}
-.quick-food:active{
-    transform:scale(.97);
-}
-.quick-food b{
-    display:block;
-    margin-top:7px;
-}
-.quick-food span{
-    color:var(--muted);
-    font-size:11px;
-}
-.form-card{
-    background:var(--card);
-    border-radius:22px;
-    padding:18px;
-    box-shadow:var(--shadow);
-}
-label{
-    display:block;
-    color:var(--muted);
-    font-size:12px;
-    font-weight:650;
-    margin-bottom:5px;
-}
-input,select{
-    width:100%;
-    border:1px solid var(--line);
-    background:#fafafa;
-    color:var(--text);
-    padding:13px;
-    border-radius:13px;
-    font-size:15px;
-    outline:none;
-}
-input:focus,select:focus{
-    border-color:var(--primary);
-}
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:11px;
-}
-.full{
-    grid-column:1/-1;
-}
-.primary-btn{
-    width:100%;
-    border:0;
-    background:var(--primary);
-    color:white;
-    padding:14px;
-    border-radius:14px;
-    font-size:15px;
-    font-weight:750;
-    margin-top:12px;
-}
-.weight-card{
-    background:var(--card);
-    border-radius:22px;
-    padding:18px;
-    box-shadow:var(--shadow);
-}
-.weight-main{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-.weight-number{
-    font-size:32px;
-    font-weight:800;
-}
-.weight-number small{
-    font-size:13px;
-    color:var(--muted);
-}
-.weight-history{
-    margin-top:15px;
-}
-.weight-line{
-    display:flex;
-    justify-content:space-between;
-    padding:10px 0;
-    border-bottom:1px solid var(--line);
-    font-size:13px;
-}
-.empty{
-    color:var(--muted);
-    text-align:center;
-    padding:20px 10px;
-    font-size:13px;
-}
-.settings{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.35);
-    z-index:10;
-    align-items:flex-end;
-}
-.settings.open{
-    display:flex;
-}
-.sheet{
-    width:100%;
-    max-width:600px;
-    margin:auto;
-    background:var(--card);
-    border-radius:25px 25px 0 0;
-    padding:22px;
-}
-.sheet h2{
-    margin-top:0;
-}
-.close{
-    float:right;
-    border:0;
-    background:#f3f4f6;
-    width:36px;
-    height:36px;
-    border-radius:50%;
-}
-.toast{
-    position:fixed;
-    bottom:25px;
-    left:50%;
-    transform:translateX(-50%) translateY(100px);
-    background:#111827;
-    color:white;
-    padding:12px 18px;
-    border-radius:14px;
-    font-size:13px;
-    opacity:0;
-    transition:.3s;
-    z-index:20;
-}
-.toast.show{
-    transform:translateX(-50%) translateY(0);
-    opacity:1;
-}
-@media(max-width:380px){
-    .stats{
-        grid-template-columns:1fr;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f5f5fb;
+    color: #18181b;
+    padding-bottom: 100px;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+.app {
+    max-width: 650px;
+    margin: auto;
+}
+
+/* HEADER */
+
+.header {
+    padding: 25px 20px 18px;
+    background: linear-gradient(135deg, #7567ff, #9b5cff);
+    color: white;
+    border-radius: 0 0 28px 28px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.subtitle {
+    opacity: .85;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.settings-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.18);
+    color: white;
+    font-size: 20px;
+}
+
+/* HERO */
+
+.hero {
+    margin-top: 22px;
+    background: rgba(255,255,255,.16);
+    padding: 20px;
+    border-radius: 22px;
+}
+
+.hero-label {
+    font-size: 13px;
+    opacity: .8;
+}
+
+.calorie-number {
+    font-size: 38px;
+    font-weight: 800;
+    margin: 3px 0;
+}
+
+.calorie-target {
+    font-size: 13px;
+    opacity: .8;
+}
+
+.progress {
+    height: 9px;
+    background: rgba(255,255,255,.25);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 14px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: white;
+    border-radius: 20px;
+    width: 0%;
+    transition: .3s;
+}
+
+/* STATS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 18px 20px;
+}
+
+.stat-card {
+    background: white;
+    padding: 17px;
+    border-radius: 20px;
+    box-shadow: 0 4px 18px rgba(40,40,80,.06);
+}
+
+.stat-title {
+    color: #777;
+    font-size: 12px;
+}
+
+.stat-value {
+    font-size: 23px;
+    font-weight: 750;
+    margin-top: 4px;
+}
+
+.stat-target {
+    color: #999;
+    font-size: 11px;
+}
+
+/* SCAN FOOD */
+
+.scan-card {
+    margin: 0 20px 20px;
+    padding: 20px;
+    border-radius: 23px;
+    background: linear-gradient(135deg, #15152b, #28244c);
+    color: white;
+    box-shadow: 0 8px 25px rgba(35,30,80,.15);
+}
+
+.scan-title {
+    font-size: 20px;
+    font-weight: 750;
+}
+
+.scan-description {
+    color: #c7c4dc;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 5px;
+}
+
+.scan-button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 15px;
+    background: white;
+    color: #5547d9;
+    font-weight: 750;
+    font-size: 15px;
+}
+
+.scan-button:active {
+    transform: scale(.98);
+}
+
+/* SECTION */
+
+.section {
+    padding: 0 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 22px 0 12px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 750;
+}
+
+.clear-btn {
+    background: none;
+    color: #6d5dfc;
+    font-size: 12px;
+}
+
+/* QUICK FOODS */
+
+.quick-foods {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 9px;
+}
+
+.quick-food {
+    background: white;
+    padding: 13px 5px;
+    border-radius: 17px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(30,30,80,.05);
+}
+
+.quick-food .emoji {
+    font-size: 24px;
+}
+
+.quick-food span {
+    display: block;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.quick-food small {
+    display: block;
+    color: #888;
+    margin-top: 3px;
+}
+
+/* MEALS */
+
+.meal {
+    margin-bottom: 12px;
+}
+
+.meal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7px;
+}
+
+.meal-name {
+    font-weight: 700;
+}
+
+.meal-total {
+    color: #777;
+    font-size: 12px;
+}
+
+.food-item {
+    background: white;
+    padding: 14px;
+    border-radius: 16px;
+    margin-bottom: 7px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 3px 12px rgba(30,30,80,.04);
+}
+
+.food-left {
+    display: flex;
+    gap: 11px;
+    align-items: center;
+}
+
+.food-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: #f0efff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 21px;
+}
+
+.food-name {
+    font-weight: 650;
+    font-size: 14px;
+}
+
+.food-info {
+    font-size: 11px;
+    color: #888;
+    margin-top: 3px;
+}
+
+.food-calories {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.food-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 4px;
+}
+
+.action-btn {
+    background: #f1f0ff;
+    color: #6658e8;
+    border-radius: 8px;
+    padding: 4px 7px;
+    font-size: 10px;
+}
+
+.delete-btn {
+    color: #e34f68;
+    background: #fff0f2;
+}
+
+/* ADD FOOD */
+
+.add-food-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 16px;
+    background: #6d5dfc;
+    color: white;
+    font-weight: 700;
+    margin: 8px 0 20px;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(650px, 100%);
+    background: rgba(255,255,255,.94);
+    backdrop-filter: blur(15px);
+    border-top: 1px solid #eee;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-around;
+    z-index: 50;
+}
+
+.nav-btn {
+    background: none;
+    color: #888;
+    text-align: center;
+    font-size: 11px;
+}
+
+.nav-btn span {
+    display: block;
+    font-size: 21px;
+    margin-bottom: 3px;
+}
+
+.nav-btn.active {
+    color: #6d5dfc;
+}
+
+/* MODAL */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,25,.55);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 100;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.sheet {
+    width: min(650px, 100%);
+    background: white;
+    border-radius: 28px 28px 0 0;
+    padding: 22px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp .25s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
     }
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-    .full{
-        grid-column:auto;
+    to {
+        transform: translateY(0);
     }
 }
-@media(prefers-color-scheme:dark){
-    :root{
-        --bg:#0b1120;
-        --card:#111827;
-        --text:#f9fafb;
-        --muted:#9ca3af;
-        --line:#273244;
-        --primary-light:#2e1065;
+
+.sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.sheet-title {
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.close-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #f2f2f5;
+}
+
+/* FORMS */
+
+.form-group {
+    margin-bottom: 13px;
+}
+
+.form-label {
+    display: block;
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 13px;
+    padding: 13px;
+    outline: none;
+    background: white;
+}
+
+.form-input:focus,
+.form-select:focus {
+    border-color: #6d5dfc;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    background: #6d5dfc;
+    color: white;
+    font-weight: 700;
+    margin-top: 7px;
+}
+
+/* CAMERA */
+
+.camera-area {
+    border: 2px dashed #d8d5ff;
+    background: #f7f6ff;
+    border-radius: 20px;
+    padding: 12px;
+    text-align: center;
+}
+
+.camera-icon {
+    font-size: 48px;
+    margin: 15px 0 5px;
+}
+
+.camera-text {
+    color: #777;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.photo-preview {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 17px;
+    display: none;
+}
+
+.camera-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.camera-btn {
+    padding: 13px;
+    border-radius: 13px;
+    font-weight: 700;
+}
+
+.camera-btn.primary {
+    background: #6d5dfc;
+    color: white;
+}
+
+.camera-btn.secondary {
+    background: #ecebff;
+    color: #5547d9;
+}
+
+.ai-status {
+    margin-top: 12px;
+    padding: 12px;
+    background: #f5f5f8;
+    border-radius: 13px;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* WEIGHT */
+
+.weight-box {
+    background: white;
+    padding: 18px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+}
+
+.weight-history {
+    margin-top: 10px;
+}
+
+.weight-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+}
+
+/* EMPTY */
+
+.empty {
+    background: white;
+    padding: 20px;
+    text-align: center;
+    color: #888;
+    border-radius: 16px;
+    font-size: 13px;
+}
+
+/* TOAST */
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 85px;
+    transform: translateX(-50%) translateY(20px);
+    background: #20202b;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 13px;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: .25s;
+    z-index: 200;
+    white-space: nowrap;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* DARK MODE */
+
+@media (prefers-color-scheme: dark) {
+
+    body {
+        background: #101014;
+        color: #f5f5f5;
     }
-    input,select,
-    .add-meal,
-    .close{
-        background:#182235;
-        color:var(--text);
+
+    .stat-card,
+    .food-item,
+    .quick-food,
+    .weight-box,
+    .empty,
+    .sheet {
+        background: #1b1b21;
+    }
+
+    .food-info,
+    .stat-title,
+    .meal-total {
+        color: #aaa;
+    }
+
+    .form-input,
+    .form-select {
+        background: #1b1b21;
+        color: white;
+        border-color: #333;
+    }
+
+    .bottom-nav {
+        background: rgba(25,25,30,.94);
+        border-color: #333;
+    }
+
+    .camera-area {
+        background: #1c1c25;
+        border-color: #48418c;
+    }
+
+    .ai-status {
+        background: #24242c;
+        color: #bbb;
+    }
+
+    .weight-row {
+        border-color: #333;
+    }
+
+    .close-btn {
+        background: #303038;
+        color: white;
     }
 }
 </style>
 </head>
+
 <body>
+
 <div class="app">
-    <div class="topbar">
-        <div>
-            <div class="logo">Bulk<span>Up</span> 💪</div>
-            <div class="date" id="todayText"></div>
-        </div>
-        <button class="icon-btn" onclick="openSettings()">⚙️</button>
-    </div>
-    <!-- CALORIE HERO -->
-    <div class="hero">
-        <div class="hero-top">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="header-top">
+
             <div>
-                <h2>Daily Calories</h2>
-                <p>Keep moving toward your bulk goal</p>
+                <div class="logo">BulkUp</div>
+                <div class="subtitle">Your daily nutrition tracker</div>
             </div>
-            <div class="fire">🔥</div>
+
+            <button class="settings-btn" onclick="openSettings()">
+                ⚙️
+            </button>
+
         </div>
-        <div class="hero-number">
-            <span id="calories">0</span>
-            <small>/ <span id="calorieTargetDisplay">2800</span> kcal</small>
-        </div>
-        <div class="progress">
-            <div class="progress-fill" id="calorieBar"></div>
-        </div>
-        <div class="hero-bottom">
-            <span id="caloriePercent">0% completed</span>
-            <span id="calorieLeft">2800 kcal left</span>
-        </div>
-    </div>
-    <!-- QUICK STATS -->
-    <div class="stats">
-        <div class="stat-card">
-            <div class="stat-icon">💪</div>
-            <div class="stat-title">PROTEIN</div>
-            <div class="stat-number">
-                <span id="protein">0</span>
-                <small>g</small>
+
+        <div class="hero">
+
+            <div class="hero-label">
+                Today's calories
             </div>
+
+            <div class="calorie-number">
+                <span id="calories">0</span>
+                <span style="font-size:17px;"> kcal</span>
+            </div>
+
+            <div class="calorie-target">
+                Goal: <span id="calorieGoalText">2500</span> kcal
+            </div>
+
+            <div class="progress">
+                <div class="progress-fill" id="calorieProgress"></div>
+            </div>
+
         </div>
+
+    </header>
+
+
+    <!-- STATS -->
+
+    <section class="stats">
+
         <div class="stat-card">
-            <div class="stat-icon">⚖️</div>
-            <div class="stat-title">WEIGHT</div>
-            <div class="stat-number">
+
+            <div class="stat-title">
+                Protein
+            </div>
+
+            <div class="stat-value">
+                <span id="protein">0</span> g
+            </div>
+
+            <div class="stat-target">
+                Goal: <span id="proteinGoalText">120</span> g
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Weight
+            </div>
+
+            <div class="stat-value">
                 <span id="currentWeight">--</span>
-                <small>kg</small>
+                <span style="font-size:14px;"> kg</span>
             </div>
+
+            <div class="stat-target">
+                Latest entry
+            </div>
+
         </div>
-    </div>
-    <!-- QUICK FOODS -->
-    <div class="section">
-        <div class="section-head">
-            <h3>⚡ Quick Add</h3>
+
+    </section>
+
+
+    <!-- SCAN FOOD -->
+
+    <section class="scan-card">
+
+        <div class="scan-title">
+            📷 Scan Food
         </div>
-        <div class="quick-grid">
-            <button class="quick-food" onclick="quickAdd('Eggs',78,6,'Breakfast')">
-                🥚
-                <b>1 Egg</b>
-                <span>78 kcal • 6g protein</span>
-            </button>
-            <button class="quick-food" onclick="quickAdd('Banana',105,1.3,'Breakfast')">
-                🍌
-                <b>1 Banana</b>
-                <span>105 kcal • 1.3g protein</span>
-            </button>
-            <button class="quick-food" onclick="quickAdd('Chicken Breast',165,31,'Lunch')">
-                🍗
-                <b>Chicken</b>
-                <span>165 kcal • 31g protein</span>
-            </button>
-            <button class="quick-food" onclick="quickAdd('Milk',122,6.3,'Snacks')">
-                🥛
-                <b>Milk</b>
-                <span>122 kcal • 6.3g protein</span>
-            </button>
+
+        <div class="scan-description">
+            Take a photo of your food and prepare it for AI nutrition analysis.
+            Results will be estimates.
         </div>
-    </div>
+
+        <button class="scan-button" onclick="openScanner()">
+            📸 Scan a Meal
+        </button>
+
+    </section>
+
+
+    <!-- QUICK ADD -->
+
+    <section class="section">
+
+        <div class="section-header">
+            <div class="section-title">Quick Add</div>
+        </div>
+
+        <div class="quick-foods">
+
+            <button class="quick-food" onclick="quickAdd('Egg',78,6,'🥚')">
+                <div class="emoji">🥚</div>
+                <span>Egg</span>
+                <small>78 kcal</small>
+            </button>
+
+            <button class="quick-food" onclick="quickAdd('Banana',105,1.3,'🍌')">
+                <div class="emoji">🍌</div>
+                <span>Banana</span>
+                <small>105 kcal</small>
+            </button>
+
+            <button class="quick-food" onclick="quickAdd('Chicken',250,46,'🍗')">
+                <div class="emoji">🍗</div>
+                <span>Chicken</span>
+                <small>250 kcal</small>
+            </button>
+
+            <button class="quick-food" onclick="quickAdd('Milk',120,6,'🥛')">
+                <div class="emoji">🥛</div>
+                <span>Milk</span>
+                <small>120 kcal</small>
+            </button>
+
+        </div>
+
+    </section>
+
+
     <!-- MEALS -->
-    <div class="section">
-        <div class="section-head">
-            <h3>🍽️ Today's Meals</h3>
-            <button onclick="scrollToAdd()">+ Add food</button>
-        </div>
-        <div id="meals"></div>
-    </div>
-    <!-- ADD FOOD -->
-    <div class="section" id="addSection">
-        <div class="section-head">
-            <h3>➕ Add Food</h3>
-        </div>
-        <div class="form-card">
-            <div class="form-grid">
-                <div class="full">
-                    <label>FOOD NAME</label>
-                    <input id="foodName" placeholder="e.g. Paneer">
-                </div>
-                <div>
-                    <label>CALORIES</label>
-                    <input id="foodCalories" type="number" placeholder="kcal">
-                </div>
-                <div>
-                    <label>PROTEIN</label>
-                    <input id="foodProtein" type="number" step="0.1" placeholder="grams">
-                </div>
-                <div class="full">
-                    <label>MEAL</label>
-                    <select id="mealType">
-                        <option>Breakfast</option>
-                        <option>Lunch</option>
-                        <option>Snacks</option>
-                        <option>Dinner</option>
-                    </select>
-                </div>
-            </div>
-            <button class="primary-btn" onclick="addFood()">
-                Add to Today's Meals
+
+    <section class="section">
+
+        <div class="section-header">
+            <div class="section-title">Today's Meals</div>
+
+            <button class="clear-btn" onclick="clearToday()">
+                Clear All
             </button>
         </div>
-    </div>
+
+        <div id="meals"></div>
+
+        <button class="add-food-btn" onclick="openAddFood()">
+            + Add Food Manually
+        </button>
+
+    </section>
+
+
     <!-- WEIGHT -->
-    <div class="section">
-        <div class="section-head">
-            <h3>⚖️ Weight</h3>
+
+    <section class="section">
+
+        <div class="section-header">
+            <div class="section-title">Weight Tracking</div>
         </div>
-        <div class="weight-card">
-            <div class="weight-main">
-                <div>
-                    <div class="stat-title">TODAY'S WEIGHT</div>
-                    <div class="weight-number">
-                        <span id="weightBig">--</span>
-                        <small>kg</small>
-                    </div>
-                </div>
-                <div style="width:130px">
-                    <input id="weightInput" type="number" step="0.1" placeholder="Weight">
-                    <button class="primary-btn" onclick="saveWeight()">Save</button>
-                </div>
+
+        <div class="weight-box">
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Weight (kg)
+                </label>
+
+                <input
+                    class="form-input"
+                    id="weightInput"
+                    type="number"
+                    step="0.1"
+                    placeholder="Enter weight"
+                >
+
             </div>
+
+            <button class="primary-btn" onclick="saveWeight()">
+                Save Weight
+            </button>
+
             <div class="weight-history" id="weightHistory"></div>
+
         </div>
-    </div>
+
+    </section>
+
 </div>
-<!-- SETTINGS -->
-<div class="settings" id="settings">
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+    <button class="nav-btn active" onclick="scrollTopPage()">
+        <span>🏠</span>
+        Home
+    </button>
+
+    <button class="nav-btn" onclick="openScanner()">
+        <span>📷</span>
+        Scan
+    </button>
+
+    <button class="nav-btn" onclick="openAddFood()">
+        <span>➕</span>
+        Add Food
+    </button>
+
+    <button class="nav-btn" onclick="openSettings()">
+        <span>⚙️</span>
+        Settings
+    </button>
+
+</nav>
+
+
+<!-- SCANNER MODAL -->
+
+<div class="modal" id="scannerModal">
+
     <div class="sheet">
-        <button class="close" onclick="closeSettings()">✕</button>
-        <h2>⚙️ Goals</h2>
-        <label>DAILY CALORIE TARGET</label>
-        <input id="settingsCalories" type="number">
-        <br><br>
-        <label>DAILY PROTEIN TARGET</label>
-        <input id="settingsProtein" type="number">
-        <button class="primary-btn" onclick="saveGoals()">
-            Save Goals
-        </button>
-        <button
-            class="primary-btn"
-            style="background:#fee2e2;color:#b91c1c"
-            onclick="clearAllData()">
-            Reset All Data
-        </button>
-    </div>
-</div>
-<div class="toast" id="toast"></div>
-<script>
-const KEY = "bulkupTrackerV2";
-let appData = JSON.parse(localStorage.getItem(KEY)) || {
-    goals:{
-        calories:2800,
-        protein:130
-    },
-    days:{}
-};
-let selectedDate = today();
-function today(){
-    const d = new Date();
-    return d.toISOString().split("T")[0];
-}
-function getDay(){
-    if(!appData.days[selectedDate]){
-        appData.days[selectedDate] = {
-            foods:[],
-            weight:null
-        };
-    }
-    return appData.days[selectedDate];
-}
-function save(){
-    localStorage.setItem(KEY,JSON.stringify(appData));
-}
-function showToast(message){
-    const toast=document.getElementById("toast");
-    toast.textContent=message;
-    toast.classList.add("show");
-    setTimeout(()=>{
-        toast.classList.remove("show");
-    },1800);
-}
-function addFood(){
-    const name=document.getElementById("foodName").value.trim();
-    const calories=Number(document.getElementById("foodCalories").value);
-    const protein=Number(document.getElementById("foodProtein").value);
-    const meal=document.getElementById("mealType").value;
-    if(!name){
-        showToast("Enter a food name");
-        return;
-    }
-    if(calories<0 || protein<0){
-        showToast("Enter valid values");
-        return;
-    }
-    getDay().foods.push({
-        id:Date.now(),
-        name,
-        calories,
-        protein,
-        meal
-    });
-    save();
-    document.getElementById("foodName").value="";
-    document.getElementById("foodCalories").value="";
-    document.getElementById("foodProtein").value="";
-    render();
-    showToast("Food added ✓");
-}
-function quickAdd(name,calories,protein,meal){
-    getDay().foods.push({
-        id:Date.now(),
-        name,
-        calories,
-        protein,
-        meal
-    });
-    save();
-    render();
-    showToast(name+" added ✓");
-}
-function deleteFood(id){
-    getDay().foods =
-        getDay().foods.filter(food=>food.id!==id);
-    save();
-    render();
-    showToast("Food removed");
-}
-function render(){
-    const day=getDay();
-    let calories=0;
-    let protein=0;
-    day.foods.forEach(food=>{
-        calories+=Number(food.calories);
-        protein+=Number(food.protein);
-    });
-    document.getElementById("calories").textContent=Math.round(calories);
-    document.getElementById("protein").textContent=Math.round(protein*10)/10;
-    const target=Number(appData.goals.calories)||2800;
-    const proteinTarget=Number(appData.goals.protein)||130;
-    document.getElementById("calorieTargetDisplay").textContent=target;
-    const percent=Math.min((calories/target)*100,100);
-    document.getElementById("calorieBar").style.width=percent+"%";
-    document.getElementById("caloriePercent").textContent=
-        Math.round(percent)+"% completed";
-    const left=target-calories;
-    document.getElementById("calorieLeft").textContent=
-        left>=0
-        ? Math.round(left)+" kcal left"
-        : Math.round(Math.abs(left))+" kcal over";
-    renderMeals();
-    renderWeight();
-}
-function renderMeals(){
-    const meals=[
-        ["Breakfast","🍳"],
-        ["Lunch","🍛"],
-        ["Snacks","🥜"],
-        ["Dinner","🍽️"]
-    ];
-    const foods=getDay().foods;
-    let html="";
-    meals.forEach(([meal,icon])=>{
-        const list=foods.filter(f=>f.meal===meal);
-        let totalCal=0;
-        let totalProtein=0;
-        list.forEach(f=>{
-            totalCal+=Number(f.calories);
-            totalProtein+=Number(f.protein);
-        });
-        html+=`
-        <div class="meal-card">
-            <div class="meal-head">
-                <div class="meal-icon">${icon}</div>
-                <div class="meal-info">
-                    <div class="meal-name">${meal}</div>
-                    <div class="meal-total">
-                        ${totalCal} kcal • ${Math.round(totalProtein*10)/10}g protein
-                    </div>
-                </div>
-                <button class="add-meal"
-                    onclick="selectMeal('${meal}')">
-                    +
-                </button>
+
+        <div class="sheet-header">
+
+            <div class="sheet-title">
+                📷 Scan Food
             </div>
-        `;
-        list.forEach(food=>{
-            html+=`
-            <div class="food-row">
-                <div class="food-info">
-                    <div class="food-name">${escapeHTML(food.name)}</div>
-                    <div class="food-meta">
-                        ${food.calories} kcal • ${food.protein}g protein
-                    </div>
-                </div>
-                <button
-                    class="delete"
-                    onclick="deleteFood(${food.id})">
-                    ✕
-                </button>
-            </div>
-            `;
-        });
-        if(list.length===0){
-            html+=`
-            <div class="empty">
-                Nothing added yet
-            </div>
-            `;
-        }
-        html+=`</div>`;
-    });
-    document.getElementById("meals").innerHTML=html;
-}
-function selectMeal(meal){
-    document.getElementById("mealType").value=meal;
-    scrollToAdd();
-    setTimeout(()=>{
-        document.getElementById("foodName").focus();
-    },400);
-}
-function scrollToAdd(){
-    document.getElementById("addSection")
-        .scrollIntoView({
-            behavior:"smooth",
-            block:"center"
-        });
-}
-function saveWeight(){
-    const value=Number(
-        document.getElementById("weightInput").value
-    );
-    if(!value){
-        showToast("Enter your weight");
-        return;
-    }
-    getDay().weight=value;
-    save();
-    renderWeight();
-    showToast("Weight saved ✓");
-}
-function renderWeight(){
-    const day=getDay();
-    document.getElementById("currentWeight").textContent=
-        day.weight || "--";
-    document.getElementById("weightBig").textContent=
-        day.weight || "--";
-    document.getElementById("weightInput").value=
-        day.weight || "";
-    const dates=Object.keys(appData.days)
-        .filter(date=>appData.days[date].weight)
-        .sort()
-        .reverse()
-        .slice(0,7);
-    let html="";
-    dates.forEach(date=>{
-        html+=`
-        <div class="weight-line">
-            <span>${formatDate(date)}</span>
-            <strong>${appData.days[date].weight} kg</strong>
+
+            <button class="close-btn" onclick="closeScanner()">
+                ✕
+            </button>
+
         </div>
+
+
+        <div class="camera-area">
+
+            <div class="camera-icon" id="cameraIcon">
+                📸
+            </div>
+
+            <div class="camera-text" id="cameraText">
+                Take a clear photo of your meal.
+                <br>
+                For better estimates, include the whole plate.
+            </div>
+
+            <img
+                id="photoPreview"
+                class="photo-preview"
+                alt="Food preview"
+            >
+
+            <div class="camera-buttons">
+
+                <button
+                    class="camera-btn primary"
+                    onclick="takePhoto()">
+                    📷 Camera
+                </button>
+
+                <button
+                    class="camera-btn secondary"
+                    onclick="choosePhoto()">
+                    🖼️ Photos
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Hidden camera inputs -->
+
+        <input
+            id="cameraInput"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            style="display:none"
+            onchange="handlePhoto(event)"
+        >
+
+        <input
+            id="photoInput"
+            type="file"
+            accept="image/*"
+            style="display:none"
+            onchange="handlePhoto(event)"
+        >
+
+
+        <div class="ai-status" id="aiStatus">
+
+            🤖 <b>AI Scanner</b>
+
+            <br><br>
+
+            The photo scanner is ready.
+
+            The next upgrade will connect this screen
+            to AI so it can estimate:
+
+            <br><br>
+
+            • Calories<br>
+            • Protein<br>
+            • Fat<br>
+            • Fibre<br>
+            • Foods detected<br>
+            • Approximate portions
+
+        </div>
+
+
+        <div id="scanForm" style="display:none; margin-top:18px;">
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Food name
+                </label>
+
+                <input
+                    class="form-input"
+                    id="scanFoodName"
+                    placeholder="Example: Chicken rice"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Meal
+                </label>
+
+                <select class="form-select" id="scanMeal">
+
+                    <option value="Breakfast">
+                        Breakfast
+                    </option>
+
+                    <option value="Lunch">
+                        Lunch
+                    </option>
+
+                    <option value="Snacks">
+                        Snacks
+                    </option>
+
+                    <option value="Dinner">
+                        Dinner
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Calories
+                </label>
+
+                <input
+                    class="form-input"
+                    id="scanCalories"
+                    type="number"
+                    placeholder="Calories"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Protein (g)
+                </label>
+
+                <input
+                    class="form-input"
+                    id="scanProtein"
+                    type="number"
+                    step="0.1"
+                    placeholder="Protein"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Fat (g)
+                </label>
+
+                <input
+                    class="form-input"
+                    id="scanFat"
+                    type="number"
+                    step="0.1"
+                    placeholder="Fat"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Fibre (g)
+                </label>
+
+                <input
+                    class="form-input"
+                    id="scanFibre"
+                    type="number"
+                    step="0.1"
+                    placeholder="Fibre"
+                >
+
+            </div>
+
+
+            <button
+                class="primary-btn"
+                onclick="addScannedFood()">
+
+                + Add to Meal
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ADD FOOD MODAL -->
+
+<div class="modal" id="foodModal">
+
+    <div class="sheet">
+
+        <div class="sheet-header">
+
+            <div class="sheet-title">
+                Add Food
+            </div>
+
+            <button class="close-btn" onclick="closeAddFood()">
+                ✕
+            </button>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Food name
+            </label>
+
+            <input
+                class="form-input"
+                id="foodName"
+                placeholder="Example: Paneer"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Meal
+            </label>
+
+            <select class="form-select" id="foodMeal">
+
+                <option>Breakfast</option>
+                <option>Lunch</option>
+                <option>Snacks</option>
+                <option>Dinner</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Calories
+            </label>
+
+            <input
+                class="form-input"
+                id="foodCalories"
+                type="number"
+                placeholder="Calories"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Protein (g)
+            </label>
+
+            <input
+                class="form-input"
+                id="foodProtein"
+                type="number"
+                step="0.1"
+                placeholder="Protein"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Fat (g)
+            </label>
+
+            <input
+                class="form-input"
+                id="foodFat"
+                type="number"
+                step="0.1"
+                placeholder="Fat"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Fibre (g)
+            </label>
+
+            <input
+                class="form-input"
+                id="foodFibre"
+                type="number"
+                step="0.1"
+                placeholder="Fibre"
+            >
+
+        </div>
+
+
+        <button class="primary-btn" onclick="addManualFood()">
+            Add Food
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- SETTINGS MODAL -->
+
+<div class="modal" id="settingsModal">
+
+    <div class="sheet">
+
+        <div class="sheet-header">
+
+            <div class="sheet-title">
+                ⚙️ Settings
+            </div>
+
+            <button class="close-btn" onclick="closeSettings()">
+                ✕
+            </button>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Daily calorie goal
+            </label>
+
+            <input
+                class="form-input"
+                id="calorieGoal"
+                type="number"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Daily protein goal (g)
+            </label>
+
+            <input
+                class="form-input"
+                id="proteinGoal"
+                type="number"
+            >
+
+        </div>
+
+
+        <button class="primary-btn" onclick="saveSettings()">
+            Save Settings
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="toast" id="toast">
+    Saved
+</div>
+
+
+<script>
+
+/* =========================
+   DATA
+========================= */
+
+let foods = JSON.parse(
+    localStorage.getItem("bulkupFoods") || "[]"
+);
+
+let weights = JSON.parse(
+    localStorage.getItem("bulkupWeights") || "[]"
+);
+
+let settings = JSON.parse(
+    localStorage.getItem("bulkupSettings") ||
+    '{"calorieGoal":2500,"proteinGoal":120}'
+);
+
+
+/* =========================
+   DATE
+========================= */
+
+function today() {
+
+    const d = new Date();
+
+    return d.toISOString().split("T")[0];
+
+}
+
+
+/* =========================
+   SAVE
+========================= */
+
+function saveData() {
+
+    localStorage.setItem(
+        "bulkupFoods",
+        JSON.stringify(foods)
+    );
+
+    localStorage.setItem(
+        "bulkupWeights",
+        JSON.stringify(weights)
+    );
+
+    localStorage.setItem(
+        "bulkupSettings",
+        JSON.stringify(settings)
+    );
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function render() {
+
+    const todayFoods =
+        foods.filter(f => f.date === today());
+
+    let calories = 0;
+    let protein = 0;
+
+    todayFoods.forEach(f => {
+
+        calories += Number(f.calories) || 0;
+        protein += Number(f.protein) || 0;
+
+    });
+
+
+    document.getElementById("calories").textContent =
+        Math.round(calories);
+
+    document.getElementById("protein").textContent =
+        Math.round(protein * 10) / 10;
+
+    document.getElementById("calorieGoalText").textContent =
+        settings.calorieGoal;
+
+    document.getElementById("proteinGoalText").textContent =
+        settings.proteinGoal;
+
+
+    const caloriePercent =
+        Math.min(
+            (calories / settings.calorieGoal) * 100,
+            100
+        );
+
+    document.getElementById(
+        "calorieProgress"
+    ).style.width = caloriePercent + "%";
+
+
+    const latestWeight =
+        weights.length
+        ? weights[weights.length - 1].weight
+        : null;
+
+    document.getElementById(
+        "currentWeight"
+    ).textContent =
+        latestWeight || "--";
+
+
+    renderMeals();
+    renderWeights();
+
+}
+
+
+/* =========================
+   MEALS
+========================= */
+
+const mealTypes = [
+    "Breakfast",
+    "Lunch",
+    "Snacks",
+    "Dinner"
+];
+
+
+function renderMeals() {
+
+    const container =
+        document.getElementById("meals");
+
+    const todayFoods =
+        foods.filter(f => f.date === today());
+
+
+    let html = "";
+
+
+    mealTypes.forEach(meal => {
+
+        const mealFoods =
+            todayFoods.filter(
+                f => f.meal === meal
+            );
+
+
+        let totalCalories = 0;
+
+
+        mealFoods.forEach(f => {
+
+            totalCalories +=
+                Number(f.calories) || 0;
+
+        });
+
+
+        html += `
+        <div class="meal">
+
+            <div class="meal-header">
+
+                <div class="meal-name">
+                    ${meal}
+                </div>
+
+                <div class="meal-total">
+                    ${Math.round(totalCalories)} kcal
+                </div>
+
+            </div>
         `;
+
+
+        if (!mealFoods.length) {
+
+            html += `
+            <div class="empty">
+                No food added
+            </div>
+            `;
+
+        } else {
+
+            mealFoods.forEach(food => {
+
+                html += `
+                <div class="food-item">
+
+                    <div class="food-left">
+
+                        <div class="food-icon">
+                            ${food.icon || "🍽️"}
+                        </div>
+
+                        <div>
+
+                            <div class="food-name">
+                                ${escapeHtml(food.name)}
+                            </div>
+
+                            <div class="food-info">
+                                Protein ${Number(food.protein || 0)}g
+                                · Fat ${Number(food.fat || 0)}g
+                                · Fibre ${Number(food.fibre || 0)}g
+                            </div>
+
+                            <div class="food-actions">
+
+                                <button
+                                    class="action-btn delete-btn"
+                                    onclick="deleteFood('${food.id}')">
+
+                                    Delete
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="food-calories">
+                        ${Math.round(food.calories)} kcal
+                    </div>
+
+                </div>
+                `;
+
+            });
+
+        }
+
+
+        html += `</div>`;
+
     });
-    document.getElementById("weightHistory").innerHTML=html;
+
+
+    container.innerHTML = html;
+
 }
-function formatDate(date){
-    const d=new Date(date+"T00:00:00");
-    return d.toLocaleDateString("en-IN",{
-        day:"numeric",
-        month:"short"
+
+
+/* =========================
+   QUICK ADD
+========================= */
+
+function quickAdd(
+    name,
+    calories,
+    protein,
+    icon
+) {
+
+    foods.push({
+
+        id: Date.now().toString(),
+
+        name,
+        meal: "Snacks",
+
+        calories,
+        protein,
+
+        fat: 0,
+        fibre: 0,
+
+        icon,
+
+        date: today()
+
     });
-}
-function openSettings(){
-    document.getElementById("settingsCalories").value=
-        appData.goals.calories;
-    document.getElementById("settingsProtein").value=
-        appData.goals.protein;
-    document.getElementById("settings")
-        .classList.add("open");
-}
-function closeSettings(){
-    document.getElementById("settings")
-        .classList.remove("open");
-}
-function saveGoals(){
-    const calories=Number(
-        document.getElementById("settingsCalories").value
-    );
-    const protein=Number(
-        document.getElementById("settingsProtein").value
-    );
-    if(calories<=0 || protein<=0){
-        showToast("Enter valid goals");
-        return;
-    }
-    appData.goals.calories=calories;
-    appData.goals.protein=protein;
-    save();
+
+
+    saveData();
     render();
-    closeSettings();
-    showToast("Goals updated ✓");
+
+    showToast(name + " added");
+
 }
-function clearAllData(){
-    if(!confirm("Delete all tracker data?")){
+
+
+/* =========================
+   MANUAL FOOD
+========================= */
+
+function openAddFood() {
+
+    document
+        .getElementById("foodModal")
+        .classList.add("show");
+
+}
+
+
+function closeAddFood() {
+
+    document
+        .getElementById("foodModal")
+        .classList.remove("show");
+
+}
+
+
+function addManualFood() {
+
+    const name =
+        document.getElementById("foodName").value.trim();
+
+    const meal =
+        document.getElementById("foodMeal").value;
+
+    const calories =
+        Number(document.getElementById("foodCalories").value);
+
+    const protein =
+        Number(document.getElementById("foodProtein").value) || 0;
+
+    const fat =
+        Number(document.getElementById("foodFat").value) || 0;
+
+    const fibre =
+        Number(document.getElementById("foodFibre").value) || 0;
+
+
+    if (!name || !calories) {
+
+        alert("Please enter food name and calories.");
+        return;
+
+    }
+
+
+    foods.push({
+
+        id: Date.now().toString(),
+
+        name,
+        meal,
+        calories,
+        protein,
+        fat,
+        fibre,
+
+        icon: "🍽️",
+
+        date: today()
+
+    });
+
+
+    saveData();
+    render();
+    closeAddFood();
+
+    document.getElementById("foodName").value = "";
+    document.getElementById("foodCalories").value = "";
+    document.getElementById("foodProtein").value = "";
+    document.getElementById("foodFat").value = "";
+    document.getElementById("foodFibre").value = "";
+
+    showToast("Food added");
+
+}
+
+
+/* =========================
+   DELETE
+========================= */
+
+function deleteFood(id) {
+
+    foods =
+        foods.filter(
+            f => f.id !== id
+        );
+
+    saveData();
+    render();
+
+    showToast("Food removed");
+
+}
+
+
+/* =========================
+   CLEAR TODAY
+========================= */
+
+function clearToday() {
+
+    if (
+        !confirm(
+            "Remove all today's food entries?"
+        )
+    ) {
         return;
     }
-    localStorage.removeItem(KEY);
-    appData={
-        goals:{
-            calories:2800,
-            protein:130
-        },
-        days:{}
+
+
+    foods =
+        foods.filter(
+            f => f.date !== today()
+        );
+
+
+    saveData();
+    render();
+
+    showToast("Today's foods cleared");
+
+}
+
+
+/* =========================
+   CAMERA
+========================= */
+
+function openScanner() {
+
+    document
+        .getElementById("scannerModal")
+        .classList.add("show");
+
+}
+
+
+function closeScanner() {
+
+    document
+        .getElementById("scannerModal")
+        .classList.remove("show");
+
+}
+
+
+function takePhoto() {
+
+    document
+        .getElementById("cameraInput")
+        .click();
+
+}
+
+
+function choosePhoto() {
+
+    document
+        .getElementById("photoInput")
+        .click();
+
+}
+
+
+/* =========================
+   PHOTO HANDLER
+========================= */
+
+function handlePhoto(event) {
+
+    const file =
+        event.target.files[0];
+
+    if (!file) return;
+
+
+    if (!file.type.startsWith("image/")) {
+
+        alert("Please select an image.");
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload = function(e) {
+
+        const preview =
+            document.getElementById("photoPreview");
+
+        preview.src = e.target.result;
+
+        preview.style.display = "block";
+
+
+        document.getElementById(
+            "cameraIcon"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "cameraText"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "scanForm"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "aiStatus"
+        ).innerHTML = `
+            🤖 <b>Photo ready</b>
+            <br><br>
+            Your food photo has been selected.
+            <br><br>
+            AI analysis will be connected in the next step.
+            For now, you can enter the estimated nutrition
+            values below and add the meal.
+        `;
+
+
+        document.getElementById(
+            "scanFoodName"
+        ).value = "Scanned food";
+
+
+        showToast("Photo selected");
+
     };
-    closeSettings();
-    render();
-    showToast("All data cleared");
+
+
+    reader.readAsDataURL(file);
+
 }
-function escapeHTML(text){
-    return text
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-}
-document.getElementById("todayText").textContent =
-    new Date().toLocaleDateString("en-IN",{
-        weekday:"long",
-        day:"numeric",
-        month:"long"
+
+
+/* =========================
+   ADD SCANNED FOOD
+========================= */
+
+function addScannedFood() {
+
+    const name =
+        document
+        .getElementById("scanFoodName")
+        .value.trim() || "Scanned food";
+
+
+    const meal =
+        document.getElementById("scanMeal").value;
+
+
+    const calories =
+        Number(
+            document.getElementById("scanCalories").value
+        );
+
+
+    const protein =
+        Number(
+            document.getElementById("scanProtein").value
+        ) || 0;
+
+
+    const fat =
+        Number(
+            document.getElementById("scanFat").value
+        ) || 0;
+
+
+    const fibre =
+        Number(
+            document.getElementById("scanFibre").value
+        ) || 0;
+
+
+    if (!calories) {
+
+        alert(
+            "Enter the estimated calories before adding."
+        );
+
+        return;
+
+    }
+
+
+    foods.push({
+
+        id: Date.now().toString(),
+
+        name,
+        meal,
+
+        calories,
+        protein,
+        fat,
+        fibre,
+
+        icon: "📷",
+
+        date: today(),
+
+        source: "photo"
+
     });
+
+
+    saveData();
+    render();
+
+    resetScanner();
+    closeScanner();
+
+    showToast("Scanned food added");
+
+}
+
+
+/* =========================
+   RESET SCANNER
+========================= */
+
+function resetScanner() {
+
+    document.getElementById(
+        "photoPreview"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "cameraIcon"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "cameraText"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "scanForm"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "scanCalories"
+    ).value = "";
+
+    document.getElementById(
+        "scanProtein"
+    ).value = "";
+
+    document.getElementById(
+        "scanFat"
+    ).value = "";
+
+    document.getElementById(
+        "scanFibre"
+    ).value = "";
+
+
+    document.getElementById(
+        "aiStatus"
+    ).innerHTML = `
+        🤖 <b>AI Scanner</b>
+        <br><br>
+        The photo scanner is ready.
+        <br><br>
+        The next upgrade will connect this screen
+        to AI nutrition analysis.
+    `;
+
+}
+
+
+/* =========================
+   WEIGHT
+========================= */
+
+function saveWeight() {
+
+    const value =
+        Number(
+            document.getElementById("weightInput").value
+        );
+
+
+    if (!value) {
+
+        alert("Enter your weight.");
+        return;
+
+    }
+
+
+    weights.push({
+
+        weight: value,
+
+        date: new Date().toLocaleDateString()
+
+    });
+
+
+    saveData();
+    render();
+
+    document.getElementById(
+        "weightInput"
+    ).value = "";
+
+
+    showToast("Weight saved");
+
+}
+
+
+function renderWeights() {
+
+    const container =
+        document.getElementById("weightHistory");
+
+
+    if (!weights.length) {
+
+        container.innerHTML =
+            "<div style='color:#888;font-size:12px;'>No weight entries yet.</div>";
+
+        return;
+
+    }
+
+
+    const recent =
+        weights.slice(-5).reverse();
+
+
+    container.innerHTML =
+        recent.map(w => `
+
+            <div class="weight-row">
+
+                <span>${w.date}</span>
+
+                <b>${w.weight} kg</b>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+function openSettings() {
+
+    document.getElementById(
+        "calorieGoal"
+    ).value = settings.calorieGoal;
+
+
+    document.getElementById(
+        "proteinGoal"
+    ).value = settings.proteinGoal;
+
+
+    document
+        .getElementById("settingsModal")
+        .classList.add("show");
+
+}
+
+
+function closeSettings() {
+
+    document
+        .getElementById("settingsModal")
+        .classList.remove("show");
+
+}
+
+
+function saveSettings() {
+
+    settings.calorieGoal =
+        Number(
+            document.getElementById("calorieGoal").value
+        ) || 2500;
+
+
+    settings.proteinGoal =
+        Number(
+            document.getElementById("proteinGoal").value
+        ) || 120;
+
+
+    saveData();
+    render();
+    closeSettings();
+
+    showToast("Settings saved");
+
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 1800);
+
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+function scrollTopPage() {
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
 render();
+
 </script>
+
 </body>
 </html>
