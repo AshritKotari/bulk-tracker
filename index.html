@@ -2992,6 +2992,64 @@ async function testDatabaseFood() {
     }
 
 }
+
+      async function saveWeightToDatabase(weight) {
+
+    const {
+        data: {
+            user
+        }
+    } =
+        await supabaseClient.auth
+            .getUser();
+
+
+    if (!user) {
+
+        alert(
+            "Please login first."
+        );
+
+        return false;
+
+    }
+
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("weight_entries")
+            .insert({
+
+                user_id: user.id,
+
+                weight:
+                    Number(weight),
+
+                entry_date:
+                    new Date()
+                        .toISOString()
+                        .split("T")[0]
+
+            });
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Could not save weight."
+        );
+
+        return false;
+
+    }
+
+
+    return true;
+}
       
 </script>
 
