@@ -2910,6 +2910,56 @@ async function setupUserProfile(user) {
 }
 
 checkUserLogin();
+
+
+async function saveFoodToDatabase(food) {
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+        console.error("No logged-in user.");
+        return false;
+    }
+
+    const { error } = await supabaseClient
+        .from("food_entries")
+        .insert({
+            user_id: user.id,
+            food_name: food.name,
+            meal: food.meal,
+            calories: Number(food.calories) || 0,
+            protein: Number(food.protein) || 0,
+            fat: Number(food.fat) || 0,
+            fibre: Number(food.fibre) || 0,
+            entry_date: new Date().toISOString().split("T")[0],
+            source: food.source || "manual"
+        });
+
+    if (error) {
+        console.error("Database error:", error);
+        return false;
+    }
+
+    console.log("Food saved to Supabase!");
+    return true;
+}
+
+async function testDatabaseFood() {
+    const success = await saveFoodToDatabase({
+        name: "Test Food",
+        meal: "Lunch",
+        calories: 300,
+        protein: 20,
+        fat: 10,
+        fibre: 5,
+        source: "test"
+    });
+
+    if (success) {
+        alert("Test food saved successfully!");
+    }
+}
       
 </script>
 
