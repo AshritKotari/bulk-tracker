@@ -12,6 +12,119 @@
 <title>BulkUp Tracker</title>
 
 <style>
+
+/* =========================
+   LOGIN SCREEN
+========================= */
+
+.login-screen {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: #f5f7fa;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 9999;
+
+    padding: 20px;
+}
+
+
+.login-card {
+
+    width: 100%;
+
+    max-width: 400px;
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.08);
+
+    text-align: center;
+}
+
+
+.login-card h1 {
+
+    font-size: 36px;
+
+    margin-bottom: 5px;
+}
+
+
+.login-subtitle {
+
+    color: #777;
+
+    margin-bottom: 25px;
+}
+
+
+.login-card h2 {
+
+    margin-bottom: 20px;
+}
+
+
+.login-card input {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px;
+
+    margin-bottom: 12px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+}
+
+
+.login-card button:not(.link-button) {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+
+.link-button {
+
+    background: none;
+
+    border: none;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    text-decoration: underline;
+}
+      
 * {
     box-sizing: border-box;
     margin: 0;
@@ -646,6 +759,116 @@ button {
 </head>
 
 <body>
+
+      <!-- =========================
+     LOGIN SCREEN
+========================= -->
+
+<div id="loginScreen" class="login-screen">
+
+    <div class="login-card">
+
+        <h1>BulkUp</h1>
+
+        <p class="login-subtitle">
+            Your personal nutrition tracker
+        </p>
+
+
+        <!-- LOGIN FORM -->
+
+        <div id="loginForm">
+
+            <h2>Welcome Back</h2>
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Email"
+                autocomplete="email"
+            >
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Password"
+                autocomplete="current-password"
+            >
+
+            <button
+                type="button"
+                onclick="loginUser()"
+            >
+                Login
+            </button>
+
+            <p>
+                Don't have an account?
+                <button
+                    type="button"
+                    class="link-button"
+                    onclick="showSignup()"
+                >
+                    Create Account
+                </button>
+            </p>
+
+        </div>
+
+
+        <!-- SIGNUP FORM -->
+
+        <div
+            id="signupForm"
+            style="display:none;"
+        >
+
+            <h2>Create Account</h2>
+
+            <input
+                type="text"
+                id="signupName"
+                placeholder="Your name"
+            >
+
+            <input
+                type="email"
+                id="signupEmail"
+                placeholder="Email"
+                autocomplete="email"
+            >
+
+            <input
+                type="password"
+                id="signupPassword"
+                placeholder="Password"
+                autocomplete="new-password"
+            >
+
+            <button
+                type="button"
+                onclick="signupUser()"
+            >
+                Create Account
+            </button>
+
+            <p>
+                Already have an account?
+                <button
+                    type="button"
+                    class="link-button"
+                    onclick="showLogin()"
+                >
+                    Login
+                </button>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+      
 
 <div class="app">
 
@@ -2369,7 +2592,324 @@ function scrollTopPage() {
 ========================= */
 
 render();
+/* =========================
+   BULKUP AUTHENTICATION
+========================= */
 
+
+/* SHOW LOGIN */
+
+function showLogin() {
+
+    document.getElementById(
+        "loginForm"
+    ).style.display = "block";
+
+    document.getElementById(
+        "signupForm"
+    ).style.display = "none";
+}
+
+
+/* SHOW SIGNUP */
+
+function showSignup() {
+
+    document.getElementById(
+        "loginForm"
+    ).style.display = "none";
+
+    document.getElementById(
+        "signupForm"
+    ).style.display = "block";
+}
+
+
+/* =========================
+   SIGN UP
+========================= */
+
+async function signupUser() {
+
+    const name =
+        document.getElementById(
+            "signupName"
+        ).value.trim();
+
+    const email =
+        document.getElementById(
+            "signupEmail"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "signupPassword"
+        ).value;
+
+
+    if (!email || !password) {
+
+        alert(
+            "Please enter email and password."
+        );
+
+        return;
+    }
+
+
+    if (password.length < 6) {
+
+        alert(
+            "Password must be at least 6 characters."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth.signUp({
+
+                email: email,
+
+                password: password,
+
+                options: {
+
+                    data: {
+
+                        display_name: name
+
+                    }
+
+                }
+
+            });
+
+
+        if (error) {
+
+            console.error(error);
+
+            alert(error.message);
+
+            return;
+        }
+
+
+        alert(
+            "Account created successfully!"
+        );
+
+
+        showLogin();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Signup failed."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+async function loginUser() {
+
+    const email =
+        document.getElementById(
+            "loginEmail"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "loginPassword"
+        ).value;
+
+
+    if (!email || !password) {
+
+        alert(
+            "Please enter email and password."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth
+                .signInWithPassword({
+
+                    email: email,
+
+                    password: password
+
+                });
+
+
+        if (error) {
+
+            console.error(error);
+
+            alert(error.message);
+
+            return;
+        }
+
+
+        console.log(
+            "Logged in:",
+            data.user
+        );
+
+
+        await setupUserProfile(
+            data.user
+        );
+
+
+        showApp();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Login failed."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   CHECK LOGIN
+========================= */
+
+async function checkUserLogin() {
+
+    try {
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient.auth
+                .getUser();
+
+
+        if (user) {
+
+            console.log(
+                "Existing user:",
+                user.email
+            );
+
+
+            await setupUserProfile(
+                user
+            );
+
+
+            showApp();
+
+        } else {
+
+            showLogin();
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        showLogin();
+
+    }
+
+}
+
+
+/* =========================
+   SHOW APP
+========================= */
+
+function showApp() {
+
+    const loginScreen =
+        document.getElementById(
+            "loginScreen"
+        );
+
+
+    if (loginScreen) {
+
+        loginScreen.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =========================
+   CREATE USER PROFILE
+========================= */
+
+async function setupUserProfile(user) {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("profiles")
+            .upsert({
+
+                id: user.id,
+
+                display_name:
+                    user.user_metadata
+                        ?.display_name || ""
+
+            });
+
+
+    if (error) {
+
+        console.error(
+            "Profile error:",
+            error
+        );
+
+    }
+
+}
+
+checkUserLogin();
+      
 </script>
 
 </body>
