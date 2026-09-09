@@ -1295,6 +1295,23 @@ button {
 
 
 <script>
+      /* =========================
+   SUPABASE CONNECTION
+========================= */
+
+const SUPABASE_URL =
+    "https://mnwuzokbtegkwctciwyr.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_JptQh7r-kV4oUftMaTaYVw__rBYUaoq";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+console.log("Supabase connected!");
 
 /* =========================
    DATA
