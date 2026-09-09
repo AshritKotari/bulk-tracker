@@ -2960,6 +2960,38 @@ async function testDatabaseFood() {
         alert("Test food saved successfully!");
     }
 }
+
+      async function testDatabaseFood() {
+
+    const success =
+        await saveFoodToDatabase({
+
+            name: "Test Food",
+
+            meal: "Lunch",
+
+            calories: 300,
+
+            protein: 20,
+
+            fat: 10,
+
+            fibre: 5,
+
+            source: "test"
+
+        });
+
+
+    if (success) {
+
+        alert(
+            "Test food saved successfully!"
+        );
+
+    }
+
+}
       
 </script>
 
