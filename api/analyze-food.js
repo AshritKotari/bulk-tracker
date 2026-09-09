@@ -1,18 +1,17 @@
 module.exports = async (req, res) => {
-  // CORS
+  // Allow your GitHub Pages website to call this Vercel function
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // Browser preflight request
+  // Handle browser CORS check
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
-  // Only allow POST
   if (req.method !== "POST") {
     return res.status(405).json({
-      error: "Method not allowed"
+      error: "Only POST requests are allowed"
     });
   }
 
@@ -21,7 +20,7 @@ module.exports = async (req, res) => {
 
     if (!image) {
       return res.status(400).json({
-        error: "No image received"
+        error: "No food image received"
       });
     }
 
@@ -29,11 +28,11 @@ module.exports = async (req, res) => {
 
     if (!apiKey) {
       return res.status(500).json({
-        error: "OPENAI_API_KEY is not configured"
+        error: "OPENAI_API_KEY is missing in Vercel"
       });
     }
 
-    const openaiResponse = await fetch(
+    const response = await fetch(
       "https://api.openai.com/v1/responses",
       {
         method: "POST",
@@ -51,26 +50,31 @@ module.exports = async (req, res) => {
                 {
                   type: "input_text",
                   text: `
-Analyze this food photo.
+Look at this food photo and estimate the nutrition.
 
-Identify the food as accurately as possible and estimate the nutrition for the visible portion.
+Identify the food and estimate the visible portion.
 
-Return ONLY valid JSON in exactly this format:
+Return ONLY valid JSON.
+Do not include markdown or explanations.
+
+Use exactly this format:
 
 {
-  "foodName": "name of food",
+  "foodName": "food name",
   "calories": 0,
   "protein": 0,
   "fat": 0,
   "fibre": 0
 }
 
-Use numbers only for calories, protein, fat and fibre.
-Calories should be kcal.
-Protein, fat and fibre should be grams.
-
-If the portion size cannot be determined exactly, give a reasonable estimate and do not invent excessive precision.
-                  `
+Rules:
+- calories = kcal
+- protein = grams
+- fat = grams
+- fibre = grams
+- Use reasonable estimates.
+- Use numbers only for nutrition values.
+`
                 },
                 {
                   type: "input_image",
@@ -83,62 +87,68 @@ If the portion size cannot be determined exactly, give a reasonable estimate and
       }
     );
 
-    const data = await openaiResponse.json();
+    const data = await response.json();
 
-    if (!openaiResponse.ok) {
-      console.error("OpenAI error:", data);
+    if (!response.ok) {
+      console.error("OpenAI API error:", data);
 
-      return res.status(openaiResponse.status).json({
-        error: data.error?.message || "OpenAI request failed"
+      return res.status(response.status).json({
+        error: data.error?.message || "OpenAI API request failed"
       });
     }
 
-    // Responses API normally provides output_text
-    let outputText = data.output_text || "";
+    let resultText = data.output_text || "";
 
-    // Fallback if output_text isn't available
-    if (!outputText && data.output) {
+    // Fallback for Responses API output structure
+    if (!resultText && data.output) {
       for (const item of data.output) {
         if (item.content) {
           for (const content of item.content) {
             if (content.text) {
-              outputText += content.text;
+              resultText += content.text;
             }
           }
         }
       }
     }
 
-    if (!outputText) {
+    if (!resultText) {
       return res.status(500).json({
-        error: "AI returned no analysis"
+        error: "No analysis was returned by AI"
       });
     }
 
-    // Remove accidental markdown code fences
-    outputText = outputText
+    // Remove markdown code fences if AI adds them
+    resultText = resultText
       .replace(/```json/gi, "")
       .replace(/```/g, "")
       .trim();
 
-    let result;
+    let nutrition;
 
     try {
-      result = JSON.parse(outputText);
+      nutrition = JSON.parse(resultText);
     } catch (error) {
-      console.error("Invalid AI JSON:", outputText);
+      console.error("Invalid JSON from AI:", resultText);
 
       return res.status(500).json({
-        error: "AI returned invalid nutrition data"
+        error: "AI returned invalid nutrition data",
+        raw: resultText
       });
     }
 
     return res.status(200).json({
-      output_text: JSON.stringify(result)
+      output_text: JSON.stringify({
+        foodName: nutrition.foodName || "Unknown food",
+        calories: Number(nutrition.calories) || 0,
+        protein: Number(nutrition.protein) || 0,
+        fat: Number(nutrition.fat) || 0,
+        fibre: Number(nutrition.fibre) || 0
+      })
     });
 
   } catch (error) {
-    console.error("Server error:", error);
+    console.error("Function error:", error);
 
     return res.status(500).json({
       error: error.message || "Server error"
